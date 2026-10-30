@@ -1,6 +1,6 @@
 # Skill Architect engineering contract
 
-Version: 0.3.0-preview.1. Status: local preview, conditional review.
+Version: 0.3.0-preview.2. Status: downloadable preview, conditional review.
 
 ## Objective and users
 

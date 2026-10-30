@@ -1,9 +1,8 @@
 {
   "schema": "skill-architect.package/v1",
-  "version": "0.3.0-preview.1",
-  "status": "local-preview-conditional-review",
+  "version": "0.3.0-preview.2",
+  "status": "preview-conditional-review",
   "prepared_on": "2026-10-30",
-  "published": false,
   "public_license": "not-selected",
   "structural_validation": "pass-selected-engineered-checks",
   "tooling_tests": {
@@ -14,5 +13,7 @@
   "historical_behavioral_evidence": "0.2.0-preview.1 only; does not certify changed guidance",
   "native_discovery": "not-tested",
   "effectful_integrations": "not-tested",
-  "distribution_checksums": "external preview manifest.json and SHA256SUMS"
+  "distribution_checksums": "external preview manifest.json and SHA256SUMS",
+  "record_scope": "engineering evidence; distribution publication is recorded by GitHub releases",
+  "distribution": "https://github.com/krnali-io/security-skills-architect/releases"
 }

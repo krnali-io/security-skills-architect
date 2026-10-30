@@ -1,6 +1,6 @@
 # Application Defence engineering contract
 
-Version: 0.2.0-preview.1. Decision: conditional_review; local design preview.
+Version: 0.2.0-preview.2. Decision: conditional_review; downloadable design preview.
 
 ## Objective
 Help application owners, developers and security operators turn an application review into a maintained application-specific skill and operational check contract. Skills coordinate reasoning; collectors, schedulers, secret stores and ITSM services provide execution and durable state.

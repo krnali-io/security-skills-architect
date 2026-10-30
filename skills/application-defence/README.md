@@ -1,27 +1,33 @@
-# Application Defence — 0.1.0-preview.1
+# Application Defence — 0.2.0-preview.2
 
-**Status:** local design preview / conditional review. No application has been assessed with this version. Live behavior, native discovery, collectors, scheduling and ITSM delivery remain unverified. No background service or credentials are installed.
+**Status:** published preview / conditional review. The reusable builder has structural checks and planned behavioural cases. A separate private application pilot has exercised deployed-package advisory queries and local-model interpretation; broader builder behaviour, native discovery, recovery and live krnali Ops delivery remain unverified. This package installs no collector, background service or credentials.
 
 ## Value
-Learn a specific application and generate or maintain its dedicated defence skill, evidence profile, recurring check plan and ITSM handoff. Use to establish application-specific ongoing security monitoring; exclude unrelated coding and standalone one-off audits.
 
-## Install
-Copy this skill folder to your agent's documented skill path, or use its supported installer. Check the host's actual version and capabilities.
+Learn a specific application and generate or maintain its dedicated defence skill, evidence profile, recurring check plan and operator handoff. Prioritize newly disclosed vulnerabilities and zero-day exposure triage using deployed versions, current advisories, relevant code paths and vendor-supported response guidance. See [the emerging-risk workflow](references/emerging-vulnerabilities.md). Container posture alone cannot satisfy this scope, and advisory matching cannot discover an undisclosed flaw.
 
-## Example request
-> Use $application-defence to learn the application in /path/to/repository and create its dedicated defence skill in /path/to/private-output. Review code, locked dependencies, application configuration and delivery definitions. Record host/network gaps. Prepare recurring checks and a local ITSM export; report what is verified.
+## Install and use
 
-The result is a `defend-<application-id>` skill plus its evidence/check profile. Begin with repository review and local output. Supply the chosen executor and ITSM destination for concrete setup. Later use the generated application skill to refresh evidence and triage changes. Skill Architect helps with engineering validation but is not required to interpret this package.
+Use the [project installation guide](https://github.com/krnali-io/security-skills-architect#install-in-codex) or your host's documented mechanism. Test actual host activation and resource access.
 
-## Permissions and privacy
-Repository access and local output are the initial requirements. Current advisories need source retrieval; host/network observation and integrations depend on authorized tools. Keep profiles/history private and credentials in a secret store. No telemetry or automatic uploads. The [Agent Skills format](https://agentskills.io/specification) is used; native host support needs actual acceptance testing.
+> Use $application-defence to learn the application in /path/to/repository and create its dedicated defence skill in /path/to/private-output. Prioritize exact deployed dependencies, fresh advisories and exploitation evidence, affected code/configuration paths, and vendor patches or mitigations. Record source freshness and unknown reachability. Prepare recurring checks and a local operator export; report what is verified.
 
-Skill Markdown runs on invocation. Monitoring requires an executor, state, collectors and independent heartbeat/freshness alerts. A generated plan is designed, not verified-active. Runtime incident detection depends on suitable telemetry and tested rules. ServiceNow/Jira Service Management are candidate destinations, not implemented integrations; a neutral export needs tenant-specific mapping before delivery.
+The result is a `defend-<application-id>` skill plus its evidence/check profile. Begin with authorized repository review and private output. Supply the selected executor and operator destination for concrete setup. Later use the generated application skill to refresh evidence and triage changes. The builder does not have to remain installed to use the generated package.
 
-## Evidence
-See SPEC.md and VALIDATION.md for scope, static checks and untested boundaries. Report version, host, expected/actual outcome and a sanitized reproduction through the existing project channel. Confirmed failures become regression cases; no public support channel is configured. Public licence and release location remain unselected.
+## Execution, permissions and privacy
+
+Skill instructions run on invocation. Recurrence needs separately configured collectors, an executor, durable state and an independent freshness check. Record configured, verified-active and degraded coverage separately. The private pilot uses a fixed collector, systemd and local Ollama; that runtime and its application profile are not bundled here.
+
+Current advisory checks require source retrieval. OSV queries can disclose package names/versions or commit identity to the service; document the actual egress. Keep source, model prompts, secrets and raw histories private unless sharing is explicitly authorized. A local model does not make all connected tools offline. Keep credentials in the executor's secret store. No telemetry or automatic trace uploads are installed by this package.
+
+Use the operator's existing destination. Our pilot intends to use krnali Ops; its adapter remains unconnected. A separate ITSM product is unnecessary. Other destinations need their own authorized mapping and tested delivery. Local exports stay unsent until then. Runtime incident detection requires actual telemetry and tested rules.
+
+## Evidence and feedback
+
+Read [SPEC.md](SPEC.md) and [VALIDATION.md](VALIDATION.md) for scope, structural checks, pilot evidence boundaries and open gates. The [project review](https://github.com/krnali-io/security-skills-architect/blob/main/docs/review-2026-10-30.md) records lessons from the private pilot without publishing its raw profile or findings.
+
+Use [GitHub issues](https://github.com/krnali-io/security-skills-architect/issues) for sanitized reports containing version, host, expected/actual result and a minimal reproduction. Confirmed failures become regressions. A public reuse licence is still awaiting an owner decision; publication does not assert an open-source licence grant. Native host support requires acceptance testing beyond the [Agent Skills format](https://agentskills.io/specification).
 
 ## Uninstall
-Remove only the installed builder directory through the host's documented process. Generated application skills, profiles and separately configured schedules remain separate resources. Retire schedules through their executor before decommissioning monitoring.
 
-For newly emerging vulnerabilities, use the [emerging-risk workflow](references/emerging-vulnerabilities.md). It requires current deployed dependency evidence and advisory/exploitation sources, code-path triage and vendor-supported remediation. Container posture alone cannot satisfy this scope. The package does not ship a running feed collector or guarantee discovery of undisclosed zero-days.
+Remove only this installed builder through the host's documented process. Generated application skills, profiles and separately configured schedules remain separate resources. Retire monitoring through its executor before decommissioning it.

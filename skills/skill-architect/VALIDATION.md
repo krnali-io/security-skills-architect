@@ -1,6 +1,6 @@
-# Build validation — 0.3.0-preview.1
+# Build validation — 0.3.0-preview.2
 
-Date: 30 October 2026. Decision: **conditional review / local preview**.
+Date: 30 October 2026. Decision: **conditional review / downloadable preview**.
 
 | Check | Actual result |
 |---|---|
@@ -26,4 +26,4 @@ Current source adds proportionate continuing-assurance guidance, an application/
 | Result quality | not-tested | Current baseline/treatment and artifact rubric review pending |
 | User experience | review | Example/setup/failure guidance; human first-use review pending |
 
-Next acceptance: run current paired cases, inspect outputs against all criteria, test native discovery/resources on each claimed host and complete a real application/operator pilot. Missing evidence remains conditional review; no stable public support or performance claim is made. Public licence and release location remain unresolved. No deployment or publication occurred.
+Next acceptance: run current paired cases, inspect outputs against all criteria, test native discovery/resources on each claimed host and complete broader application/operator acceptance. A separate private companion pilot has exercised local-model advisory interpretation; that does not establish acceptance of this general architect workflow. Missing evidence remains conditional review; no stable public support or performance claim is made. GitHub preview releases are available. The engineering tools themselves do not deploy or publish. Public reuse licensing remains unresolved. This revision updates version, publication and feedback documentation; current workflow behaviour still lacks broad acceptance.

@@ -2,7 +2,7 @@
 name: application-defence
 description: "Learn a specific application and generate or maintain its dedicated defence skill, evidence profile, recurring check plan and ITSM handoff. Use for newly disclosed vulnerabilities, zero-day exposure triage and application-specific ongoing security monitoring; exclude unrelated coding and standalone one-off audits."
 metadata:
-  version: "0.2.0-preview.1"
+  version: "0.2.0-preview.2"
 ---
 
 # Application Defence
@@ -23,9 +23,9 @@ When the operator's concern is zero-days or newly emerging codebase risk, read [
 
 ## Generate the application's skill
 
-Read [the output contract](references/output-contract.md). Create `defend-<application-id>` in the agreed location, or update its existing package without erasing history. Its trigger identifies the application and defence task. Include learned architecture/evidence, selected checks, owners, remediation/retest rules, dependencies and operator instructions. Keep runtime guidance concise and application details in references. Keep secrets, raw logs and private production evidence out of public packages.
+Read [the output contract](references/output-contract.md). Create `defend-<application-id>` in the agreed location, or update its existing package without erasing history. Its trigger identifies the application and defence task. Include learned architecture/evidence, selected checks, owners, remediation/retest rules, dependencies and operator instructions. Keep runtime guidance concise and application details in references. In any generated model runner, keep trusted skill instructions separate from application, repository and advisory data; do not promote that data into the system-instruction role. Validate output bounds and demonstrated semantic regressions. A schema-valid response or completed inference is not acceptance of its conclusions. Keep secrets, raw logs and private production evidence out of public packages.
 
-Generate application-specific trigger and failure scenarios. Include an actual application risk/control path with a repeatable verification method; copying a generic checklist is insufficient. Record source, revision/environment, observation time, confidence and expiry on material claims. Preserve unknowns and unresolved findings. Keep private run history separate from distributable instructions; refresh affected facts/checks as the application changes.
+Generate application-specific trigger and failure scenarios. Include an actual application risk/control path with a repeatable verification method; copying a generic checklist is insufficient. Record source, revision/environment, observation time, confidence and expiry on material claims. Preserve unknowns and unresolved findings. Unassessed reachability is unknown, never evidence that a vulnerable feature is unused or safe to close. Keep private run history separate from distributable instructions; refresh affected facts/checks as the application changes.
 
 ## Establish ongoing checks
 

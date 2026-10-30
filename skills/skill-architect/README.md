@@ -1,8 +1,8 @@
-# Skill Architect — 0.3.0-preview.1
+# Skill Architect — 0.3.0-preview.2
 
 Build and review reusable Agent Skills against seven quality gates, with separate structural checks and actual behavioral evidence.
 
-**Status:** local preview / conditional review. The generator, validator and paired Codex/Claude CLI evaluator are implemented. Version 0.3 adds continuing-assurance guidance to generated skills and scaffolds. Earlier tooling and small Codex controlled-text results apply to version 0.2; the changed guidance has not had live behavioral acceptance. Native activation, effectful integrations and demonstrated baseline improvement remain unverified.
+**Status:** downloadable preview / conditional review. The generator, validator and paired Codex/Claude CLI evaluator are implemented. Version 0.3 adds continuing-assurance guidance to generated skills and scaffolds. Earlier tooling and small Codex controlled-text results apply to version 0.2; the changed guidance has not had live behavioral acceptance. Native activation, effectful integrations and demonstrated baseline improvement remain unverified.
 
 Application work follows [the defence lifecycle](references/defence-lifecycle.md): learn and baseline, check changes and freshness, route findings, and verify remediation. The separately packaged `application-defence` companion specializes this process into one generated skill per application. Monitoring needs an actual scheduler, collectors and persistent state; neither package silently installs these.
 
@@ -12,7 +12,7 @@ In Codex, invoke `$skill-architect` with the recurring task, intended users, inp
 
 > Use $skill-architect to build a read-only skill that reviews an API contract and produces actionable findings. Define its acceptance criteria and evaluate it before making release claims.
 
-The skill is installed locally at `~/.codex/skills/skill-architect`. If the current client does not discover a newly installed skill, start a new session. For other hosts, install the portable folder using that host's supported mechanism and test discovery; this package does not claim native compatibility from its layout alone.
+Follow the [project installation guide](https://github.com/krnali-io/security-skills-architect#install-in-codex) and your host's documented discovery paths. If the current client does not discover a newly installed skill, start a new session. For other hosts, install the portable folder using that host's supported mechanism and test discovery; this package does not claim native compatibility from its layout alone.
 
 ## Local tools
 
@@ -51,11 +51,11 @@ See [evaluation guidance](references/evaluation.md) for case schemas and limits,
 python3 scripts/build_preview.py --skill . --output /path/to/new-preview-directory
 ```
 
-Repeat `--skill` to include another package. The builder creates deterministic ZIPs, per-file/ZIP hashes, a manifest and SHA256SUMS. It includes only selected package resources and planned evaluation files; private run traces, profiles and unknown root files are excluded. Review included files before public sharing: allowlisting is not secret detection. Checksums are not signatures. Output is a local review preview, not publication or behavioural certification. Public licence and release location still need to be selected. The scaffold entrypoint is stored as `SKILL.md.template` so an installer does not discover it as a second skill.
+Repeat `--skill` to include another package. The builder creates deterministic ZIPs, per-file/ZIP hashes, a manifest and SHA256SUMS. It includes only selected package resources and planned evaluation files; private run traces, profiles and unknown root files are excluded. Review included files before public sharing: allowlisting is not secret detection. Checksums are not signatures. Output is a local review preview, not publication or behavioural certification. Preview packages are published through the [project releases](https://github.com/krnali-io/security-skills-architect/releases). A public reuse licence still awaits the owner's decision. The scaffold entrypoint is stored as `SKILL.md.template` so an installer does not discover it as a second skill.
 
 ## Feedback and maintenance
 
-Report the package version, host version, case ID, expected/actual behavior and a sanitized reproduction to the maintainer through your existing project channel. Do not attach credentials or raw customer traces. No telemetry or feedback transmission is installed. Confirmed failures become regression cases.
+Report the package version, host version, case ID, expected/actual behavior and a sanitized reproduction through [GitHub issues](https://github.com/krnali-io/security-skills-architect/issues). Do not attach credentials or raw customer traces. No telemetry or feedback transmission is installed. Confirmed failures become regression cases.
 
 To remove the local skill, remove only its installed `skill-architect` folder after preserving any work you need. The development source and private evaluation results remain separate. No hosting, marketplace publication or operational access is configured.
 
