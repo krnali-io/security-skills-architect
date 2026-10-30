@@ -4,7 +4,7 @@
 
 ## Disclosure checks
 
-Two local scanners reviewed all retained Git history without finding credential patterns. Credential verification against external services was disabled. Release attachments were downloaded, archive paths checked and contents scanned; no tested private application/host/address/home-path identifiers or credential patterns were found in those attachments. Complete checksum sets matched. One older release intentionally has a withdrawn/incomplete attachment set and is labelled accordingly.
+Two local scanners reviewed all retained Git history without finding credential patterns. Credential verification against external services was disabled. Release attachments were downloaded, archive paths checked and contents scanned; no tested private application/host/address/home-path identifiers or credential patterns were found in those attachments. Complete checksum sets matched. Withdrawn or incomplete attachment sets are labelled accordingly; they are not presented as verified complete downloads.
 
 The current source tree and README artwork were anonymised. Some older source snapshots and automatically generated source archives retain identifying labels. Removing those identifiers requires the separately approval-gated history/tag migration; it is not described as complete. No actual labels or private operational details are reproduced here. A clean scanner result does not establish that unknown secret formats or all identifying information are absent.
 
