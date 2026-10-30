@@ -1,0 +1,8 @@
+[
+  {"id":"positive-direct","prompt":"Use __SKILL_NAME__ to carry out its core task.","should_trigger":true},
+  {"id":"positive-paraphrase","prompt":"Can you help with the task covered by __SKILL_NAME__?","should_trigger":true},
+  {"id":"positive-realistic","prompt":"Please apply __SKILL_NAME__ to this sample input.","should_trigger":true},
+  {"id":"negative-unrelated","prompt":"What is the capital of Sweden?","should_trigger":false},
+  {"id":"negative-other-task","prompt":"Summarize today's weather forecast.","should_trigger":false},
+  {"id":"negative-mention-only","prompt":"I'm documenting the name __SKILL_NAME__, not asking you to invoke it.","should_trigger":false}
+]

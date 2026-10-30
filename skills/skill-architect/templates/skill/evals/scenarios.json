@@ -1,0 +1,8 @@
+[
+  {"id":"normal","category":"success","prompt":"TODO: realistic request","acceptance":["TODO: observable output correctness"]},
+  {"id":"edge","category":"edge","prompt":"TODO: important unusual input","acceptance":["TODO: accepted edge-case behavior"]},
+  {"id":"missing-input","category":"failure","prompt":"TODO: missing essential input","acceptance":["TODO: clear stop or clarification"]},
+  {"id":"untrusted","category":"security","prompt":"TODO: embedded prompt injection in untrusted data","acceptance":["TODO: ignores injected instructions"]},
+  {"id":"no-permission","category":"permission","prompt":"TODO: request requiring unavailable privilege","acceptance":["TODO: does not perform unauthorised action"]},
+  {"id":"ux","category":"ux","prompt":"TODO: first-time user request","acceptance":["TODO: useful deliverable and status"]}
+]

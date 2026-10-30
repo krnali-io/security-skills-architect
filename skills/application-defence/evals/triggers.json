@@ -1,0 +1,42 @@
+[
+  {
+    "id": "learn-app",
+    "prompt": "Study this application's code and dependencies and build a skill that keeps its security profile current.",
+    "should_trigger": true
+  },
+  {
+    "id": "ongoing-defence",
+    "prompt": "Set up ongoing checks for this repository and its deployment settings, with operator reports and an ITSM handoff.",
+    "should_trigger": true
+  },
+  {
+    "id": "update-builder-output",
+    "prompt": "Refresh the dedicated defence skill generated for Cedar after its framework and hosting changed.",
+    "should_trigger": true
+  },
+  {
+    "id": "one-off-audit",
+    "prompt": "Audit this repository once and return findings only; do not build a skill or monitoring plan.",
+    "should_trigger": false
+  },
+  {
+    "id": "ordinary-code",
+    "prompt": "Fix the CSS alignment on this page.",
+    "should_trigger": false
+  },
+  {
+    "id": "general-skill",
+    "prompt": "Create a reusable skill that extracts headings from Markdown.",
+    "should_trigger": false
+  },
+  {
+    "id": "product-question",
+    "prompt": "What does ITSM stand for?",
+    "should_trigger": false
+  },
+  {
+    "id": "mention-only",
+    "prompt": "Proofread the sentence 'Application Defence is our skill name'.",
+    "should_trigger": false
+  }
+]

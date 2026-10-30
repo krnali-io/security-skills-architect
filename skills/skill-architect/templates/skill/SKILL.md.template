@@ -1,0 +1,26 @@
+---
+name: __SKILL_NAME__
+description: __SKILL_YAML_DESCRIPTION__
+---
+
+# __SKILL_NAME__
+
+## Process
+
+1. Confirm the user's request matches the described use case and no exclusion applies.
+2. Check prerequisites and available permissions; refuse to guess missing critical data.
+3. Perform the task using trusted tools and the least privileges necessary.
+4. Verify results against the defined acceptance criteria before reporting success.
+5. Return the deliverable, checks actually run, any limitations and next action.
+
+## Continuing assurance
+
+Recheck material assumptions when inputs, dependencies or the operating environment change. Preserve unresolved failures and record confirmed corrections as regression cases. If this task promises recurring checks, name the executor, persistent evidence, freshness limits and failure owner before reporting monitoring as active.
+
+## Failure behavior
+
+Stop when a required dependency or permission is unavailable. Explain what did and did not happen. Do not claim completion without verification.
+
+## Output contract
+
+Return: deliverable, verification evidence, limitations and recommended next action.

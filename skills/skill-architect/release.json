@@ -1,0 +1,18 @@
+{
+  "schema": "skill-architect.package/v1",
+  "version": "0.3.0-preview.1",
+  "status": "local-preview-conditional-review",
+  "prepared_on": "2026-10-30",
+  "published": false,
+  "public_license": "not-selected",
+  "structural_validation": "pass-selected-engineered-checks",
+  "tooling_tests": {
+    "passed": 34,
+    "scope": "local synthetic tooling and fake-runtime processes"
+  },
+  "current_behavioral_tests": "not-run",
+  "historical_behavioral_evidence": "0.2.0-preview.1 only; does not certify changed guidance",
+  "native_discovery": "not-tested",
+  "effectful_integrations": "not-tested",
+  "distribution_checksums": "external preview manifest.json and SHA256SUMS"
+}

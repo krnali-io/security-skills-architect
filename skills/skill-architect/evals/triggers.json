@@ -1,0 +1,8 @@
+[
+  {"id":"trigger-create","prompt":"Build me an Agent Skill from these requirements","should_trigger":true},
+  {"id":"trigger-evaluate","prompt":"Audit and test the quality of this SKILL.md","should_trigger":true},
+  {"id":"trigger-tests","prompt":"Generate trigger tests and behavioral eval cases for my skill","should_trigger":true},
+  {"id":"not-trigger-email","prompt":"Write a short thank-you email","should_trigger":false},
+  {"id":"not-trigger-code","prompt":"Fix this Python unit test","should_trigger":false},
+  {"id":"not-trigger-definition","prompt":"What does the word skill mean in psychology?","should_trigger":false}
+]

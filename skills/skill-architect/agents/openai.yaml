@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Architect"
+  short_description: "Build and evaluate skills with evidence"
+  default_prompt: "Use $skill-architect to design, build and evaluate a skill for this recurring task."

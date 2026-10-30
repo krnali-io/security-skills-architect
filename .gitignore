@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+dist/
+private-evidence/
+**/evals/results/
+**/evals/history/
+.env
+.env.*
