@@ -1,5 +1,7 @@
 # Security Skills Architect
 
+![krnali labs terminal overview: application-specific defence skills, local-model pilot, six posture checks, and planned Krnali Ops feedback](assets/security-skills-terminal.png)
+
 Build reusable agent skills that learn an application, keep its security assumptions visible, and guide ongoing defence.
 
 Security Skills Architect brings together a general skill engineering workflow and an application-specific defence builder. Start with a repository review, generate a dedicated skill for that application, then connect recurring checks and operator feedback to your existing infrastructure.
@@ -86,7 +88,13 @@ Choose an existing CI runner, timer or monitoring service to execute the checks 
 
 The workflow keeps stale evidence and failed checks visible. Missing telemetry cannot erase an open finding. Risk exceptions require an owner and expiry. A finding is resolved only when a fresh retest verifies the fix on the affected environment; closing a ticket alone is insufficient.
 
-For ITSM setup, provide the platform, authorized connection, application/service mapping, routing group and priority policy. The builder prepares field mappings, stable correlation IDs and retry/reconciliation rules. ServiceNow and Jira Service Management are candidate destinations. No live connector is bundled; exports remain unsent until an authorized integration is configured and verified.
+For ITSM setup, provide the platform, authorized connection, application/service mapping, routing group and priority policy. The builder prepares field mappings, stable correlation IDs and retry/reconciliation rules. For our own pilot, the intended operator destination is **Krnali Ops**. Its adapter is not connected yet. Other users can map the handoff to their own service-management systems. No live connector is bundled; exports remain unsent until an authorized integration is configured and verified.
+
+## Local-model pilot
+
+We built a private `defend-one-more-bar` skill and exercised it on kfserver. A fixed collector supplies six container posture checks to Qwen3:30B through local Ollama. A systemd timer schedules the pilot every 15 minutes; the model has no command tools. Reports currently stay in local files and the systemd journal. Krnali Ops delivery and full operational acceptance remain pending.
+
+The pilot runner and private application profile are not included in the downloadable skill packages. The current recurring collector covers container posture; broader code, dependency, host and network monitoring remains to be implemented and verified.
 
 ## Build another skill
 
