@@ -2,13 +2,13 @@
 
 ![krnali labs terminal overview: application-specific defence skills, local-model pilot, six posture checks, and planned Krnali Ops feedback](assets/security-skills-terminal.png)
 
-Build reusable agent skills that learn an application, keep its security assumptions visible, and guide ongoing defence.
+Build reusable agent skills that learn an application and keep watch for emerging vulnerabilities in its code and dependencies.
 
-Security Skills Architect brings together a general skill engineering workflow and an application-specific defence builder. Start with a repository review, generate a dedicated skill for that application, then connect recurring checks and operator feedback to your existing infrastructure.
+Security Skills Architect brings together a general skill engineering workflow and an application-specific defence builder. Start with a repository and deployed-dependency review, generate a dedicated skill for that application, then connect fresh advisory sources, code-path triage and operator feedback. The priority is newly disclosed risk, including exposure to vulnerabilities exploited as zero-days; advisory matching cannot guarantee detection of undisclosed flaws.
 
 **Preview:** the packages and tooling are available for evaluation. Background monitoring, native host acceptance and live ITSM integrations have not been verified. Installing these skills does not start a monitoring service.
 
-[Download the preview](https://github.com/krnali-io/security-skills-architect/releases/tag/v0.3.0-preview.1) · [Application workflow](skills/application-defence/SKILL.md) · [Engineering workflow](skills/skill-architect/SKILL.md)
+[Download the preview](https://github.com/krnali-io/security-skills-architect/releases/tag/v0.3.0-preview.2) · [Application workflow](skills/application-defence/SKILL.md) · [Engineering workflow](skills/skill-architect/SKILL.md)
 
 ## Choose a skill
 
@@ -25,8 +25,8 @@ Ask the built-in installer to install either or both folders:
 
 ```text
 Use $skill-installer to install these skills:
-https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.1/skills/skill-architect
-https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.1/skills/application-defence
+https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.2/skills/skill-architect
+https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.2/skills/application-defence
 ```
 
 Alternatively, download the individual ZIPs and `SHA256SUMS` from the release. Verify the downloaded files with `sha256sum -c SHA256SUMS` on Linux or `shasum -a 256 -c SHA256SUMS` on macOS; download every listed file to verify the complete set. Extract the desired skill folder into your project's `.agents/skills/` or your personal `~/.agents/skills/` directory. Preserve each folder name. For an upgrade, move the previous folder outside the skill discovery directory first so versions are not mixed.
@@ -42,8 +42,10 @@ Open your application repository in your agent and use:
 ```text
 Use $application-defence to learn this application and generate its dedicated
 security skill in ../private-defence-output.
-Review the code, locked dependencies, application configuration and deployment
-configuration. Map the important trust boundaries and risks to repeatable checks.
+Prioritize emerging vulnerabilities: inventory exact deployed dependencies,
+query fresh advisories and known-exploitation sources, and review affected
+code/configuration paths. Record vendor fixed releases or mitigations, source
+freshness and unknown reachability. Map risks to repeatable checks.
 Record missing runtime, host and network evidence explicitly.
 Prepare a monitoring plan and a local ITSM export. Report what was actually
 checked, what remains unknown, and the next operator actions.
@@ -92,9 +94,9 @@ For ITSM setup, provide the platform, authorized connection, application/service
 
 ## Local-model pilot
 
-We built a private `defend-one-more-bar` skill and exercised it on kfserver. A fixed collector supplies six container posture checks to Qwen3:30B through local Ollama. A systemd timer schedules the pilot every 15 minutes; the model has no command tools. Reports currently stay in local files and the systemd journal. Krnali Ops delivery and full operational acceptance remain pending.
+We built a private `defend-one-more-bar` skill and exercised it on kfserver. A fixed collector now inventories deployed Python distributions, queries OSV for exact-version matches, enriches CVE aliases using CISA KEV, and supplies findings to Qwen3:30B through local Ollama. Six container posture checks remain supplemental. A systemd timer schedules the pilot every 15 minutes; the model has no command tools. Reports currently stay in local files and the systemd journal. Krnali Ops delivery and full operational acceptance remain pending.
 
-The pilot runner and private application profile are not included in the downloadable skill packages. The current recurring collector covers container posture; broader code, dependency, host and network monitoring remains to be implemented and verified.
+The pilot runner and private application profile are not included in the downloadable skill packages. The private pilot has exercised real advisory matches and targeted code review. Per-advisory reachability, other application components, native/OS/runtime advisories and broader infrastructure coverage remain incomplete. Package names and versions are sent to OSV; application code and local-model prompts remain local.
 
 ## Build another skill
 
@@ -144,11 +146,11 @@ This prints a plan without making model calls. Add `--run` to execute the review
 
 ## Evidence and preview limits
 
-The initial preview passed 34 local tooling tests. Both packages and the unpacked release archives passed selected structural checks. The application builder has 12 planned scenarios and 8 trigger cases; they have not been executed as live acceptance tests. Earlier architect smoke results do not certify the new defence guidance.
+The initial preview passed 34 local tooling tests. Both packages and the unpacked release archives passed selected structural checks. The application builder has 16 planned scenarios and 8 trigger cases; they have not been executed as live acceptance tests. Earlier architect smoke results do not certify the new defence guidance.
 
 Read the detailed [architect evidence](skills/skill-architect/VALIDATION.md) and [application builder evidence](skills/application-defence/VALIDATION.md). The package metadata records its local preparation status; GitHub release publication does not change its conditional engineering verdict.
 
-Next acceptance work is a real application pilot, native activation testing, scheduler recovery testing and a sandbox ITSM integration. CI runs local tooling checks only and contains no application deployment job. Future Krnali-hosted services default to kfserver; other providers need explicit authorization.
+Further acceptance work includes broader application components, per-advisory code-path evidence, repeated local-model quality evaluations, native activation, scheduler recovery and a verified krnali Ops handoff. CI runs local tooling checks only and contains no application deployment job. Future Krnali-hosted services default to kfserver; other providers need explicit authorization.
 
 ## Feedback and licence
 

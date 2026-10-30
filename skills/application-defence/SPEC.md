@@ -1,12 +1,15 @@
 # Application Defence engineering contract
 
-Version: 0.1.0-preview.1. Decision: conditional_review; local design preview.
+Version: 0.2.0-preview.1. Decision: conditional_review; local design preview.
 
 ## Objective
 Help application owners, developers and security operators turn an application review into a maintained application-specific skill and operational check contract. Skills coordinate reasoning; collectors, schedulers, secret stores and ITSM services provide execution and durable state.
 
 ## Scope and exclusions
 Trigger for learning an application and establishing/updating its dedicated defence skill or ongoing monitoring. Exclude ordinary coding, unrelated infrastructure administration and standalone one-off audits. Generated `defend-<application-id>` skills handle later checks of their named application. Dependencies and adjacent networks are not automatically enrolled.
+
+## Emerging-risk priority
+For zero-day/newly disclosed vulnerability tasks, the required core is deployed dependency identity, fresh relevant advisories/exploitation evidence, source-code reachability review and vendor-supported patch/mitigation guidance. Generic posture checks cannot satisfy that scope. Advisory matching cannot establish absence of undisclosed vulnerabilities. OSV queries disclose package/version metadata; code and local-model prompts stay local. A missing advisory feed is a coverage failure.
 
 ## Inputs and outputs
 Input: repository/application identity, revision, authorized environments and evidence; optionally runtime observations, owners, executor and ITSM destination. Missing application identity permits design only.

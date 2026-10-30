@@ -23,3 +23,5 @@ See SPEC.md and VALIDATION.md for scope, static checks and untested boundaries. 
 
 ## Uninstall
 Remove only the installed builder directory through the host's documented process. Generated application skills, profiles and separately configured schedules remain separate resources. Retire schedules through their executor before decommissioning monitoring.
+
+For newly emerging vulnerabilities, use the [emerging-risk workflow](references/emerging-vulnerabilities.md). It requires current deployed dependency evidence and advisory/exploitation sources, code-path triage and vendor-supported remediation. Container posture alone cannot satisfy this scope. The package does not ship a running feed collector or guarantee discovery of undisclosed zero-days.

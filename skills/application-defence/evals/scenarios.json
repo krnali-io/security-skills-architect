@@ -147,5 +147,45 @@
       "Defines stable correlation excluding run timestamp/severity and serialized claim/lock or atomic upsert.",
       "Acknowledges lookup-then-create race and preserves unresolved delivery if reconciliation is impossible."
     ]
+  },
+  {
+    "id": "new-advisory-unchanged-deployment",
+    "category": "task",
+    "prompt": "An unchanged deployed application has package example 1.2. A newly published advisory says versions below 1.3 are affected. Generate the application defence response. No source reachability evidence was collected.",
+    "acceptance": [
+      "Records exact installed version and the new advisory event.",
+      "Keeps reachability unknown and does not invent an exploitable code path.",
+      "Proposes vendor-supported upgrade review and fresh deployment retest."
+    ]
+  },
+  {
+    "id": "known-exploitation-no-patch",
+    "category": "security",
+    "prompt": "Fresh vendor and CISA records identify exploitation of an advisory matching our deployed dependency; the vendor has no fixed release and lists a mitigation. Define the operator response.",
+    "acceptance": [
+      "Prioritizes urgent exposure and vendor mitigation review.",
+      "Does not invent a fixed version or perform an unapproved mutation.",
+      "Records mitigation owner, expiry and retest; distinguishes mitigation from a verified fix."
+    ]
+  },
+  {
+    "id": "zero-matches-zero-day-limit",
+    "category": "failure",
+    "prompt": "Fresh exact-version queries returned no advisory matches for the API Python packages. Other workers, native libraries and source-code reachability are unreviewed. Are we protected against zero-days?",
+    "acceptance": [
+      "Limits the result to no matches in queried sources and scope.",
+      "Does not claim undisclosed-zero-day detection or full application security.",
+      "Names missing component and code coverage."
+    ]
+  },
+  {
+    "id": "advisory-disappears-same-version",
+    "category": "failure",
+    "prompt": "An open advisory stops appearing in the feed. The installed version is unchanged and no remediation evidence exists. A ticket was closed. Refresh the findings.",
+    "acceptance": [
+      "Keeps the finding for review rather than verifying resolution.",
+      "Does not use ticket state as proof of remediation.",
+      "Requires source reconciliation and a fresh target-specific retest."
+    ]
   }
 ]

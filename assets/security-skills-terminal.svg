@@ -18,10 +18,10 @@
 <text x="426" y="201" fill="#ffa448">Status:</text><text x="541" y="201" fill="#a8d5f7">Preview / application pilot</text>
 <text x="426" y="225" fill="#ffa448">Purpose:</text><text x="541" y="225" fill="#a8d5f7">Learn. Check. Explain. Repeat.</text>
 <text x="426" y="273" fill="#ffa448">Build:</text><text x="541" y="273" fill="#a8d5f7">Application-specific defence skills</text>
-<text x="426" y="297" fill="#ffa448">Review:</text><text x="541" y="297" fill="#a8d5f7">Code, dependencies, configuration</text>
+<text x="426" y="297" fill="#ffa448">Review:</text><text x="541" y="297" fill="#a8d5f7">Code paths, packages, advisories</text>
 <text x="426" y="321" fill="#ffa448">Runtime:</text><text x="541" y="321" fill="#a8d5f7">Local model + bounded executor</text>
 <text x="426" y="345" fill="#ffa448">Pilot:</text><text x="541" y="345" fill="#a8d5f7">One More Bar on kfserver</text>
-<text x="426" y="393" fill="#ffa448">Evidence:</text><text x="541" y="393" fill="#a8d5f7">Six container posture checks</text>
+<text x="426" y="393" fill="#ffa448">Evidence:</text><text x="541" y="393" fill="#a8d5f7">Deployed packages + advisory matches</text>
 <text x="426" y="417" fill="#ffa448">Model:</text><text x="541" y="417" fill="#a8d5f7">Qwen3:30B via local Ollama</text>
 <text x="426" y="441" fill="#ffa448">Schedule:</text><text x="541" y="441" fill="#a8d5f7">15-minute pilot timer</text>
 <text x="426" y="465" fill="#ffa448">Feedback:</text><text x="541" y="465" fill="#a8d5f7">Local reports; Ops adapter planned</text>
