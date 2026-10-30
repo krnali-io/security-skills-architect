@@ -1,4 +1,4 @@
-# Build validation — 0.3.0-preview.2
+# Build validation — 0.3.0-preview.3
 
 Date: 30 October 2026. Decision: **conditional review / downloadable preview**.
 
@@ -26,4 +26,6 @@ Current source adds proportionate continuing-assurance guidance, an application/
 | Result quality | not-tested | Current baseline/treatment and artifact rubric review pending |
 | User experience | review | Example/setup/failure guidance; human first-use review pending |
 
-Next acceptance: run current paired cases, inspect outputs against all criteria, test native discovery/resources on each claimed host and complete broader application/operator acceptance. A separate private companion pilot has exercised local-model advisory interpretation; that does not establish acceptance of this general architect workflow. Missing evidence remains conditional review; no stable public support or performance claim is made. GitHub preview releases are available. The engineering tools themselves do not deploy or publish. Public reuse licensing remains unresolved. This revision updates version, publication and feedback documentation; current workflow behaviour still lacks broad acceptance.
+Next acceptance: run current paired cases, inspect outputs against all criteria, test native discovery/resources on each claimed host and complete broader application/operator acceptance. A separate private companion pilot has exercised local-model advisory interpretation; that does not establish acceptance of this general architect workflow. Missing evidence remains conditional review; no stable public support or performance claim is made. GitHub preview releases are available. The engineering tools themselves do not deploy or publish. Public reuse licensing remains unresolved. This revision carries scoped operational security lessons into the lifecycle/safety guidance and adds a planned boundary-design case. A separate AI reviewer independently repeated 29 private-runtime tests and the enrolled pilot completed a staged run; this does not certify factory output quality or production authority, inventory trust, transactions, resources or delivery. Current workflow behaviour still lacks broad acceptance.
+
+The general architect's new operational-boundary case is planned, not executed. The reference runtime is private and not included in this package. See the [sanitized security follow-up](https://github.com/krnali-io/security-skills-architect/blob/main/docs/security-review-2026-10-30.md).

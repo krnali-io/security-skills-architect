@@ -1,4 +1,4 @@
-# Skill Architect — 0.3.0-preview.2
+# Skill Architect — 0.3.0-preview.3
 
 Build and review reusable Agent Skills against seven quality gates, with separate structural checks and actual behavioral evidence.
 

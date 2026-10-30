@@ -1,6 +1,6 @@
 # Skill Architect engineering contract
 
-Version: 0.3.0-preview.2. Status: downloadable preview, conditional review.
+Version: 0.3.0-preview.3. Status: downloadable preview, conditional review.
 
 ## Objective and users
 
@@ -38,3 +38,5 @@ Unit/integration tests exercise scripts with synthetic files and fake runtime pr
 Generated skills carry a proportionate continuing-assurance contract. Application and operational skills define baseline evidence, freshness, recurring execution/state, coverage failure escalation, operator/ITSM routing and verified remediation. Nonoperational skills may limit this to assumption refresh and regression cases. The architect does not itself become an application monitor or provision a scheduler. See references/defence-lifecycle.md. New guidance requires behavioral evaluation; historical 0.2 evidence does not certify it.
 
 Keep one canonical source and a matching installed copy; preserve private run evidence separately from distributable packages. Reevaluate changed behavior, runtime adapters, permissions and confirmed regressions. Record reviewer, artifact/context hashes, versions, date, sample size, limitations and remediation in each release. The project owner accepts public releases; installation alone is not publication.
+
+Operational monitor designs must apply the proportional lifecycle/security references: enforced least privilege, collector trust, protected enrollment, committed-state consistency, immutable run history and independent coverage/delivery. Separate private-pilot regression evidence from the architect's own unexecuted behavioural cases.

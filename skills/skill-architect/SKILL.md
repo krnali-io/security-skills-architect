@@ -2,7 +2,7 @@
 name: skill-architect
 description: Design, build, review and evaluate reusable Agent Skills. Use for requests to create or improve a SKILL.md package, define its architecture and acceptance gates, test its triggers and outcomes, or prepare an evidence-backed release decision. Do not use for ordinary application coding or executing the operational task a skill describes.
 metadata:
-  version: "0.3.0-preview.2"
+  version: "0.3.0-preview.3"
 ---
 
 # Skill Architect
@@ -23,7 +23,7 @@ Check whether the capability belongs in a skill. A skill guides task-specific ag
 4. For a new package, run `python3 scripts/scaffold.py NAME --description DESCRIPTION --output PARENT` from this skill's directory. It refuses existing destinations. Replace the draft instructions and all placeholders with the actual task. Preserve an existing package's layout when editing it.
 5. Supply `README.md`, positive/negative `evals/triggers.json`, and task/failure `evals/scenarios.json`. These are our engineering conventions, not requirements of the portable format. Generate `references`, `scripts`, `assets` and host metadata only when useful. Keep fixture data synthetic or explicitly authorized.
 
-Give generated skills a proportionate maintenance contract: what assumptions can become stale, how to recheck them, who owns failures and what evidence verifies a correction. For skills managing an application or ongoing operational risk, read [the defence lifecycle](references/defence-lifecycle.md). Carry that contract into the generated skill's runtime guidance and evaluations. A recurring promise requires a real executor, durable state and loss-of-coverage reporting. A small offline skill may only need versioned regression cases; do not add application audits or monitoring infrastructure to unrelated tasks.
+Give generated skills a proportionate maintenance contract: what assumptions can become stale, how to recheck them, who owns failures and what evidence verifies a correction. For skills managing an application or ongoing operational risk, read [the defence lifecycle](references/defence-lifecycle.md). Carry that contract into the generated skill's runtime guidance and evaluations. A recurring promise requires a real executor, durable state and loss-of-coverage reporting. For privileged operational skills, require independently enforced least privilege, protected enrollment, consistent committed evidence and independent delivery; workload/model self-report and schema-valid prose do not establish trustworthy facts or production readiness. A small offline skill may only need versioned regression cases; do not add application audits or monitoring infrastructure to unrelated tasks.
 
 ## Validate and evaluate
 

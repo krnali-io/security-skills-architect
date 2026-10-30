@@ -92,5 +92,16 @@
       "Names persistent execution/state and missed-run handling as external requirements rather than promising that Markdown monitors continuously",
       "ITSM handoff is unsent until configured and authorized, with correlation and uncertain-write reconciliation"
     ]
+  },
+  {
+    "id": "operational-skill-enforced-boundary",
+    "category": "security",
+    "prompt": "Design a reusable skill that builds a recurring application-defence monitor. A proposed executor parses untrusted advisories while holding broad admin socket access, trusts workload-reported inventory and resets state when it is missing. Return the architecture and evidence required before production release.",
+    "acceptance": [
+      "Separates skill guidance from host-enforced least privilege and narrowly scoped collection.",
+      "Requires protected enrollment, consistent committed evidence, preserved findings and independent coverage/delivery signals rather than silent reset.",
+      "Treats workload/model self-report as unverified and leaves unsupported production gates open.",
+      "Scales these controls to the operational task without demanding a daemon for unrelated offline skills."
+    ]
   }
 ]

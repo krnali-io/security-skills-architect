@@ -29,3 +29,16 @@ Report new, changed, overdue and resolved issues alongside coverage and last suc
 ## Evaluate the promise
 
 Include changed deployed versions, stale baselines, missing host access, unavailable feeds, injected instructions, missed schedules, lost state, duplicate events, ambiguous ticket writes, exception expiry and failed remediation retests. Separate text-behavior tests from live executor and integration evidence. Monitoring is only active for the explicitly verified coverage; unknown areas remain visible.
+
+## Lessons to carry into operational skill designs
+
+Scale these requirements to the task's effects. A small offline transformation does not need an operational service. A recurring application/security monitor does:
+
+- Protect enrollment/baseline identity independently of disposable state. Missing or corrupted stores must not silently reset known findings, including on a second recovery attempt.
+- Bind success, immutable run records and finding stores to one consistent generation. Publish run history create-only; test loss, collision/replay and partial commits. Safe temporary creation and per-file fsync are not a multi-artifact transaction.
+- Coordinate writer/watcher snapshots. An in-flight job can use the last committed evidence for reporting but cannot renew its age. Read generation pointers under the appropriate consistency boundary.
+- Reconcile historical exploitation and current source membership separately before computing urgency. Model withdrawal, reinstatement and verified retest explicitly.
+- Use an unprivileged analysis/model identity with no general administrative socket. Narrow any trusted collector/broker and keep installed code/configuration immutable to analysis. Workload self-reported metadata is not independent attestation.
+- Preserve deterministic findings as primary; label model explanations advisory-only. Require independent missed-run/server-loss delivery and tested operator integration before claiming the associated coverage.
+
+A scoped private pilot or correction test supports only the paths actually exercised. Keep broader authority, inventory trust, transaction recovery, resource limits, delivery and model-quality gates open until accepted evidence exists.

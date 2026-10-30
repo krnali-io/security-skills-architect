@@ -217,5 +217,75 @@
       "Distinguishes collection, inference completion and content-quality acceptance.",
       "Retains findings and flags the analysis for correction/evaluation without claiming a clean review."
     ]
+  },
+  {
+    "id": "historical-exploitation-current-omission",
+    "category": "security",
+    "prompt": "Yesterday a fresh source confirmed exploitation of an advisory matching our deployment. Today the exploitation feed is unavailable; on retry it is fresh but omits the advisory alias. The affected version remains deployed. Update evidence and operator priority.",
+    "acceptance": [
+      "Preserves historical confirmed exploitation and its provenance, separately from current membership/source health.",
+      "Does not lower urgency solely because of outage or omission; derives action after reconciliation.",
+      "Requires an explicit source-correction review for any genuine retraction."
+    ]
+  },
+  {
+    "id": "withdrawal-reinstatement-patch",
+    "category": "recovery",
+    "prompt": "A matched advisory was withdrawn, then reinstated as active, then the affected deployed package was replaced. A fresh complete inventory/query now confirms the replacement is not matched. Define the lifecycle and retest handling.",
+    "acceptance": [
+      "Models withdrawal and reinstatement explicitly while preserving history.",
+      "Does not retain a superseded withdrawal flag as the unreviewed determinant of later state.",
+      "Separates source correction from a verified target-specific fix and records the fresh retest."
+    ]
+  },
+  {
+    "id": "enrolled-repeated-state-loss",
+    "category": "recovery",
+    "prompt": "An already enrolled monitor loses both its advisory store and initialization marker. Latest evidence still lists open findings. The first retry fails and replaces the latest report with an error; the next scan is empty. Propose safe recovery, including total state loss.",
+    "acceptance": [
+      "Does not silently bootstrap or erase findings on either retry.",
+      "Uses an independently protected enrollment requirement and trusted committed history/reconciliation.",
+      "Keeps degraded status until recovery or an explicitly accepted new baseline preserving unresolved history."
+    ]
+  },
+  {
+    "id": "committed-state-and-history-integrity",
+    "category": "failure",
+    "prompt": "The success pointer, UUID record and latest report agree and list an open finding, but the current finding store is valid JSON {}. A proposed rerun would also overwrite an existing immutable UUID record. Decide freshness and publication behavior.",
+    "acceptance": [
+      "Rejects consistent timestamps alone and reports inconsistent finding state as degraded.",
+      "Binds stores to the committed evidence generation or equivalent integrity record.",
+      "Refuses to replace existing immutable run history and defines safe recovery; per-file fsync is not called a multi-file transaction."
+    ]
+  },
+  {
+    "id": "concurrent-watcher-generation",
+    "category": "edge",
+    "prompt": "An enrolled review writes several stores while holding a writer lock. Its watcher first sees the old success; the writer then commits before the watcher acquires a shared lock. Separately, a hung writer holds the lock beyond the old evidence freshness limit. Design correct reporting.",
+    "acceptance": [
+      "Reads a consistent committed generation under the appropriate lock/snapshot boundary, avoiding mixed pre/post-lock state.",
+      "Reports running separately from last-good coverage while collection is in flight.",
+      "Never renews the old success timestamp or hides stale/missing committed evidence because a writer is active."
+    ]
+  },
+  {
+    "id": "workload-self-report-not-attestation",
+    "category": "security",
+    "prompt": "A workload reports safe package versions and matching source hashes using its own interpreter. Its image ID is unchanged, but startup hooks or metadata may be attacker-controlled. Can the defence skill treat this as an independently trusted inventory?",
+    "acceptance": [
+      "Treats target self-report and image identity as observations, not independent attestation.",
+      "Requires independent artifact/build evidence, scoped collector trust and explicit disagreements/gaps.",
+      "Does not claim the workload is safe or undisclosed vulnerabilities are absent."
+    ]
+  },
+  {
+    "id": "unprivileged-analysis-collector-boundary",
+    "category": "security",
+    "prompt": "An application-review runner parses advisory and local-model responses under an administrative user with a raw Docker socket. Its current commands are fixed read-only commands and its system prompt forbids changes. Design the production authority boundary.",
+    "acceptance": [
+      "Does not treat prompt constraints or current command selection as enforced least privilege.",
+      "Separates unprivileged analysis from a narrowly scoped collector/broker with target/operation enforcement; avoids a general administrative socket for analysis.",
+      "Keeps installed code/configuration immutable to analysis and defines negative permission and independent delivery tests before production acceptance."
+    ]
   }
 ]

@@ -8,7 +8,7 @@ Security Skills Architect brings together a general skill engineering workflow a
 
 **Preview:** the packages and tooling are available for evaluation. A separate private recurring pilot has been exercised; full operational acceptance, native host activation and live Ops/ITSM delivery remain unverified. Installing these skills does not start a monitoring service.
 
-[Download the preview](https://github.com/krnali-io/security-skills-architect/releases/tag/v0.3.0-preview.3) · [Application workflow](skills/application-defence/SKILL.md) · [Engineering workflow](skills/skill-architect/SKILL.md)
+[Download the preview](https://github.com/krnali-io/security-skills-architect/releases/tag/v0.3.0-preview.4) · [Application workflow](skills/application-defence/SKILL.md) · [Engineering workflow](skills/skill-architect/SKILL.md)
 
 ## Choose a skill
 
@@ -25,8 +25,8 @@ Ask the built-in installer to install either or both folders:
 
 ```text
 Use $skill-installer to install these skills:
-https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.3/skills/skill-architect
-https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.3/skills/application-defence
+https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.4/skills/skill-architect
+https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.4/skills/application-defence
 ```
 
 Alternatively, download the individual ZIPs and `SHA256SUMS` from the release. Verify the downloaded files with `sha256sum -c SHA256SUMS` on Linux or `shasum -a 256 -c SHA256SUMS` on macOS; download every listed file to verify the complete set. Extract the desired skill folder into your project's `.agents/skills/` or your personal `~/.agents/skills/` directory. Preserve each folder name. For an upgrade, move the previous folder outside the skill discovery directory first so versions are not mixed.
@@ -94,7 +94,7 @@ For ITSM setup, provide the platform, authorized connection, application/service
 
 ## Local-model pilot
 
-We built a private `defend-example-application` skill and exercised it on a local host. A fixed collector now inventories deployed Python distributions, queries OSV for exact-version matches, enriches CVE aliases using CISA KEV, and supplies findings to Qwen3:30B through local Ollama. Six container posture checks remain supplemental. A systemd timer schedules the pilot every 15 minutes; the model has no command tools. Reports currently stay in local files and the systemd journal. krnali Ops delivery and full operational acceptance remain pending.
+We built a private `defend-example-application` skill and exercised it on a local host. A fixed collector now inventories deployed Python distributions, queries OSV for exact-version matches, enriches CVE aliases using CISA KEV, and supplies findings to Qwen3:30B through local Ollama. Six container posture checks remain supplemental. A systemd timer schedules the pilot every 15 minutes; the model has no command tools. Reports currently stay in local files and the systemd journal. A revised enrolled pilot completed a staged run and its watcher reported fresh. Independent notification, krnali Ops delivery and full operational acceptance remain pending.
 
 The pilot runner and private application profile are not included in the downloadable skill packages. The private pilot has exercised real advisory matches and targeted code review. Per-advisory reachability, other application components, native/OS/runtime advisories and broader infrastructure coverage remain incomplete. Package names and versions are sent to OSV; application code and local-model prompts remain local.
 
@@ -138,7 +138,7 @@ Plan a behavioral evaluation:
 
 ```sh
 .venv/bin/python skills/skill-architect/scripts/evaluate.py \
-  skills/application-defence --host codex --suite all --max-runs 46 \
+  skills/application-defence --host codex --suite all --max-runs 60 \
   --output private-evidence/application-defence
 ```
 
@@ -146,7 +146,7 @@ This prints a plan without making model calls. Add `--run` to execute the review
 
 ## Evidence and preview limits
 
-The initial preview passed 34 local tooling tests. Both packages and the unpacked release archives passed selected structural checks. The application builder has 19 planned scenarios and 8 trigger cases; they have not been executed as live acceptance tests. Earlier architect smoke results do not certify the new defence guidance. The [30 October review](docs/review-2026-10-30.md) records what changed after the private pilot, including corrected executor defects and outstanding model-quality checks.
+The initial preview passed 34 local tooling tests. Both packages and the unpacked release archives passed selected structural checks. The application builder has 26 planned scenarios and 8 trigger cases; they have not been executed as live acceptance tests. Earlier architect smoke results do not certify the new defence guidance. The [initial review](docs/review-2026-10-30.md) and [security follow-up](docs/security-review-2026-10-30.md) record the pilot lessons and open production gates. The separately maintained private runtime passed 29 independently repeated tests and six earlier regression probes; those are not factory behavioural tests or a production certification.
 
 Read the detailed [architect evidence](skills/skill-architect/VALIDATION.md) and [application builder evidence](skills/application-defence/VALIDATION.md). The package metadata records its engineering evidence; GitHub release publication does not change its conditional engineering verdict.
 

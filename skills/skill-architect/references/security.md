@@ -17,3 +17,11 @@ Controls:
 Acceptance: no unresolved high/critical issues; documented permissions and residual risks. A static grep for suspicious commands is a triage hint only, never a full malware analysis.
 
 The text evaluation runner disables subject tools, but its host process uses existing provider login and sends the supplied prompt/skill context to that provider. Treat the CLI and its managed policies as trusted dependencies. Never use production secrets as fixtures. Raw traces are local private artifacts, not automatically redacted exports. Review/redact before sharing. A skill cannot contain a malicious host or eliminate all ambient administrative configuration.
+
+## Operational service boundaries
+
+For skills that design privileged or recurring operations, require authority enforced outside prompts. Separate an unprivileged model/analysis service from any narrowly scoped collector/broker; do not give analysis a raw Docker/cluster/admin socket merely because its current command is read-only. Keep installed code/configuration outside analysis-writable state, define allowed targets/operations and prove denied operations with negative tests.
+
+Treat workload-generated inventories, source hashes and model claims according to their actual trust source; they are not attestation. Reconcile independently obtained artifact/build evidence and represent disagreement. Keep observations, verification and finding transitions deterministic; model prose is unverified advice.
+
+Protect enrollment against silent baseline resets; verify committed generation/store consistency; refuse overwrite of immutable run history. Test secure temporary writes, crash/ENOSPC recovery, concurrency, streaming and aggregate resource bounds. A file/journal check on the same host is not independent server-loss delivery. Require tested operator notification and update provenance for any production claim, with raw evidence kept private.

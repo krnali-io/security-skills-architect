@@ -4,7 +4,7 @@ Make this the priority when the operator wants protection against newly emerging
 
 ## Inventory and identify
 
-Record exact deployed direct/transitive package versions, ecosystem, image/artifact identity, runtime and native/OS dependencies within scope. Keep development dependencies, vendored code, generated artifacts and other services separate. Bind each inventory to an observation time and immutable deployed subject. A lockfile is source intent until deployment equivalence is established. Missing inventories and unsupported ecosystems are named gaps.
+Record exact deployed direct/transitive package versions, ecosystem, image/artifact identity, runtime and native/OS dependencies within scope. Keep development dependencies, vendored code, generated artifacts and other services separate. Bind each inventory to an observation time and immutable deployed subject. A lockfile is source intent until deployment equivalence is established. Missing inventories and unsupported ecosystems are named gaps. A workload interpreter can run startup hooks or provide forged metadata; self-reported versions/hashes and an unchanged image identifier do not attest that inventory. Reconcile trusted artifact/build inventories and independently read evidence where possible, retain disagreements and test concurrent target replacement.
 
 ## Watch for relevant changes
 
@@ -20,11 +20,13 @@ For each match record installed version, affected range, affected feature/functi
 
 Copy fixed-version candidates from the advisory for the matched package/branch; check vendor guidance and compatibility before recommending an upgrade. Do not confuse latest release with required security patch level. If no fix exists, record vendor mitigations, operator-authorised containment, owner, expiry and retest. Do not automatically install patches or run exploit payloads.
 
-KEV membership supports known exploitation. Non-membership does not prove exploitation is absent. A vulnerability may have been exploited before disclosure; use a source-supported timeline before calling it a zero-day. Advisory matching detects disclosed risks and cannot establish that undisclosed vulnerabilities are absent. Targeted source review and runtime signals can add evidence but cannot justify a guarantee of zero-day detection.
+Preserve historical confirmed exploitation evidence separately from current catalogue membership/source health. An unavailable feed or fresh catalogue omission does not retract that history. Reconcile effective evidence first, then derive urgency and the operator action; any genuine source correction needs provenance and an explicit review transition. KEV membership supports known exploitation. Non-membership does not prove exploitation is absent. A vulnerability may have been exploited before disclosure; use a source-supported timeline before calling it a zero-day. Advisory matching detects disclosed risks and cannot establish that undisclosed vulnerabilities are absent. Targeted source review and runtime signals can add evidence but cannot justify a guarantee of zero-day detection.
 
 ## Preserve state and verify response
 
-A failed/stale feed or incomplete inventory cannot close findings. Lost state requires reconciliation. Same-version disappearance from a feed needs review, not automatic verified resolution. Verify remediation against a fresh inventory of the affected deployment, current advisory data and the defined application regression/reachability test. Retain mitigation and accepted risk separately from a verified fix.
+A failed/stale feed or incomplete inventory cannot close findings. Represent withdrawal, reinstatement and subsequent retest as explicit transitions; superseded withdrawal flags must not silently control later results. Preserve original aliases and historical observations. Lost state requires reconciliation. Same-version disappearance from a feed needs review, not automatic verified resolution. Verify remediation against a fresh inventory of the affected deployment, current advisory data and the defined application regression/reachability test. Retain mitigation and accepted risk separately from a verified fix.
+
+Keep immutable deterministic findings and source health as the primary operator output. Model explanations are unverified advisory text, even when valid JSON; they do not supply facts, permission, priority-policy authority or resolution evidence. A local model is not itself a trusted collector.
 
 The operator report should answer: what changed, does this application use it, what evidence establishes exposure, is exploitation known, is a patch available, what action should the owner take, and what remains unknown? Send structured findings to the authorised destination, such as krnali Ops. Local exports remain unsent until delivery is tested.
 

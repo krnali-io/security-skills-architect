@@ -38,3 +38,15 @@ Use finding states `open`, `in_progress`, `mitigated`, `accepted_risk`, `suppres
 Verify fixes on the affected revision/artifact/environment using the specified test before closure. Proposed/merged patches and closed tickets are insufficient. Missing sensors indicate coverage loss. Dependency removal needs evidence of removal from the affected deployed artifact. Keep mitigation distinct from full correction; confirmed failures become regressions.
 
 Test missed runs, expired credentials, stale feeds, overlapping jobs, partial state commits, lost state, destination failures and failed retests before operational acceptance. These require integration evidence from the chosen executor; text evaluations cannot certify them.
+
+## Enrollment, committed generations and concurrent observation
+
+Protect enrollment/baseline requirements independently of disposable job state and the analysis process's write access. Bootstrap is an explicit one-time transition. Missing or corrupted required stores, markers, pointers or history must stay degraded across retries; a failed recovery must not erase the clues needed by the next attempt. Complete loss requires protected enrollment/history reconciliation rather than assuming a new installation.
+
+Report last committed success only when its identity, target, record and required finding stores agree. Detect valid-JSON truncation, empty replacement and stale store generations, not just missing files. Preserve immutable run history with exclusive create-only publication and collision/replay refusal. Secure temporary creation and file/directory fsync improve individual writes; they do not make all state changes a single transaction. Define and fault-test the actual commit/recovery protocol.
+
+Coordinate the watcher with writer concurrency. Read and validate a consistent success generation under the appropriate lock or snapshot boundary. While a writer is active, expose running as job state backed by the previous immutable success; its age still increases and can become stale. Do not compare partial stores or mix pre-lock and post-lock generations. Missing committed evidence remains degraded even during a run. Running is not a new verified-active coverage state.
+
+Use a separately enforced collector/broker scope and an unprivileged analysis identity without general admin sockets. Keep code/configuration outside its writable state. Bound streaming stdout/stderr, total feed bytes, decoded structures, whole-run deadlines and retention/quota, not merely each response's final size.
+
+A same-host file/journal watcher cannot report loss of its own host, account or filesystem. Require an independently running observer and exercised delivery at the operator destination, including delivery failure and recovery, before claiming that coverage. A staged successful run is useful evidence but does not establish this acceptance.

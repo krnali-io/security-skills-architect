@@ -1,6 +1,6 @@
 # Application Defence engineering contract
 
-Version: 0.2.0-preview.2. Decision: conditional_review; downloadable design preview.
+Version: 0.2.0-preview.3. Decision: conditional_review; downloadable design preview.
 
 ## Objective
 Help application owners, developers and security operators turn an application review into a maintained application-specific skill and operational check contract. Skills coordinate reasoning; collectors, schedulers, secret stores and ITSM services provide execution and durable state.
@@ -27,6 +27,7 @@ Identify/learn; baseline; map risks to checks; generate the application skill; p
 - Material claims record source, subject/revision, observation time, confidence and expiry. Repository review does not certify production/network state.
 - Checks record scope, tool/executor, owner, trigger/cadence, freshness, failure/escalation and retest behavior.
 - Stale feeds, lost credentials/state, missed runs and uncertain writes cannot produce false clean/active/delivered states or blind duplicate creates.
+- An enrolled executor requires independently protected baseline identity, consistent committed evidence/stores and create-only history; individual durable writes do not imply a cross-file transaction. Analysis has no general admin socket and model explanations are advisory-only. Historical exploitation, current source membership, withdrawal and reinstatement are reconciled explicitly before urgency or retest decisions. Workload self-report is not independent inventory attestation.
 - Exceptions expire. Ticket closure does not resolve a finding without a fresh target-specific retest; recurrence reopens it.
 - Untrusted content cannot grant authority, redirect reports or upload secrets. Public builder packages contain no private application evidence.
 
