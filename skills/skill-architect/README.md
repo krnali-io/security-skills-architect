@@ -1,4 +1,4 @@
-# Skill Architect — 0.3.0-preview.3
+# Skill Architect — 0.3.0-preview.4
 
 Build and review reusable Agent Skills against seven quality gates, with separate structural checks and actual behavioral evidence.
 
@@ -60,3 +60,5 @@ Report the package version, host version, case ID, expected/actual behavior and 
 To remove the local skill, remove only its installed `skill-architect` folder after preserving any work you need. The development source and private evaluation results remain separate. No hosting, marketplace publication or operational access is configured.
 
 Format reference: [Agent Skills specification](https://agentskills.io/specification). Host adapter sources and untested boundaries are listed in [platform guidance](references/platforms.md).
+
+The public tooling security review and its offline regression evidence are recorded in [the security review](https://github.com/krnali-io/security-skills-architect/blob/main/docs/public-security-review-2026-10-30.md). Dry-run plans list selected context files and bytes; inspect that content before adding `--run`. Hidden-file filtering is not a secret scrubber. Evaluation execution currently requires POSIX process groups (for example Linux or macOS); planning remains available elsewhere. The development install is hash-locked and binary-only and fails if no compatible PyYAML wheel exists.

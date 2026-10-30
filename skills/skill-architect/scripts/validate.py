@@ -33,6 +33,9 @@ def unique_mapping(loader, node, deep=False):
 UniqueLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, unique_mapping)
 
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+MAX_TEXT_BYTES = 256 * 1024
+MAX_PACKAGE_ENTRIES = 2000
+
 RESOURCE_RE = re.compile(r"(?<![\w/])(?:references|scripts|assets|evals)/[A-Za-z0-9_./-]+\.[A-Za-z0-9_-]+")
 def risky_code_patterns(tree: ast.AST) -> set[str]:
     """Flag risky executable AST forms, not references to those forms in docs/regexes."""
@@ -57,7 +60,8 @@ def risky_code_patterns(tree: ast.AST) -> set[str]:
 def validate(folder: Path, profile: str = "engineered") -> dict:
     if profile not in {"portable", "engineered"}:
         raise ValueError("Unknown validation profile")
-    root = folder.expanduser().resolve()
+    supplied_root = folder.expanduser()
+    root = supplied_root.resolve()
     errors: list[str] = []
     warnings: list[str] = []
     checks: list[str] = []
@@ -68,12 +72,18 @@ def validate(folder: Path, profile: str = "engineered") -> dict:
     def warn(s: str) -> None:
         warnings.append(s)
 
+    if supplied_root.is_symlink():
+        error("Package policy: symlink root is not supported")
+        return _report(root, errors, warnings, checks)
     if not root.is_dir():
         error("Target is not a directory")
         return _report(root, errors, warnings, checks)
     # Reject links before reading any package content, including linked directories.
     # This checker deliberately uses a stricter local package policy than the format.
-    for path in root.rglob("*"):
+    for index, path in enumerate(root.rglob("*")):
+        if index >= MAX_PACKAGE_ENTRIES:
+            error("Package entry limit exceeded; keep private history outside the skill")
+            break
         if path.is_symlink():
             error(f"Package policy: symlink is not supported: {path.relative_to(root)}")
     if errors:
@@ -83,6 +93,9 @@ def validate(folder: Path, profile: str = "engineered") -> dict:
         error("SKILL.md is required by the Agent Skills specification")
         return _report(root, errors, warnings, checks)
     try:
+        if skill_path.stat().st_size > MAX_TEXT_BYTES:
+            error("SKILL.md exceeds the 256 KiB text limit")
+            return _report(root, errors, warnings, checks)
         content = skill_path.read_text(encoding="utf-8")
     except (OSError, UnicodeError):
         error("SKILL.md must be readable UTF-8")
@@ -93,8 +106,9 @@ def validate(folder: Path, profile: str = "engineered") -> dict:
         return _report(root, errors, warnings, checks)
     try:
         meta = yaml.load(match.group(1), Loader=UniqueLoader)
-    except yaml.YAMLError as exc:
-        error(f"Invalid YAML frontmatter: {exc}")
+    except (yaml.YAMLError, RecursionError) as exc:
+        # Do not echo possibly sensitive frontmatter into CI or terminal output.
+        error(f"Invalid YAML frontmatter ({type(exc).__name__})")
         return _report(root, errors, warnings, checks)
     if not isinstance(meta, dict):
         error("Frontmatter must be a YAML mapping")
@@ -160,9 +174,10 @@ def validate(folder: Path, profile: str = "engineered") -> dict:
             error(f"Policy: missing planned test definitions: {relative}")
             continue
         try:
+            if path.stat().st_size > MAX_TEXT_BYTES: raise ValueError("evaluation file exceeds text limit")
             fixtures = json.loads(path.read_text(encoding="utf-8"))
-        except (ValueError, UnicodeError) as exc:
-            error(f"Invalid JSON in {relative}: {exc}")
+        except (ValueError, UnicodeError, RecursionError, OSError) as exc:
+            error(f"Invalid JSON in {relative} ({type(exc).__name__})")
             continue
         if not isinstance(fixtures, list) or not fixtures:
             error(f"{relative} must be a non-empty array")
@@ -195,10 +210,15 @@ def validate(folder: Path, profile: str = "engineered") -> dict:
     checks.append("Validated test plans, NOT test execution")
 
     for script in (root / "scripts").rglob("*.py") if (root / "scripts").is_dir() else []:
-        source = script.read_text(encoding="utf-8")
+        try:
+            if script.stat().st_size > MAX_TEXT_BYTES: raise ValueError("script exceeds text limit")
+            source = script.read_text(encoding="utf-8")
+        except (ValueError,UnicodeError,OSError):
+            error(f"Unreadable or oversized script: {script.relative_to(root)}")
+            continue
         try:
             tree = ast.parse(source, filename=str(script))
-        except SyntaxError as exc:
+        except (SyntaxError, RecursionError) as exc:
             error(f"Syntax error in {script.name}: {exc}")
         else:
             for label in risky_code_patterns(tree):
@@ -212,8 +232,12 @@ def validate(folder: Path, profile: str = "engineered") -> dict:
 
     for doc in ("SPEC.md", "SKILL.md"):
         path = root / doc
-        if path.is_file() and "TODO" in path.read_text(encoding="utf-8"):
-            warn(f"{doc} still contains TODO markers")
+        if path.is_file():
+            try:
+                if path.stat().st_size > MAX_TEXT_BYTES: raise ValueError("document exceeds text limit")
+                if "TODO" in path.read_text(encoding="utf-8"): warn(f"{doc} still contains TODO markers")
+            except (ValueError,UnicodeError,OSError):
+                error(f"Unreadable or oversized document: {doc}")
     return _report(root, errors, warnings, checks)
 
 

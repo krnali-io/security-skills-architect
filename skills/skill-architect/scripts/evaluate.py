@@ -12,6 +12,8 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import re
+import selectors
+import stat
 import shutil
 import signal
 import subprocess
@@ -19,11 +21,13 @@ import tempfile
 import time
 from datetime import datetime, timezone
 
-from validate import UniqueLoader, validate
+from validate import UniqueLoader, validate, MAX_PACKAGE_ENTRIES
+from build_preview import SUFFIXES
 import yaml
 
 LIMIT = 256 * 1024
 TRACE_LIMIT = 16 * 1024 * 1024
+MAX_JSON_DEPTH = 100
 SLUG = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
@@ -31,19 +35,62 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+class InputDepthError(ValueError):
+    """A selected-profile nesting limit, independent of interpreter recursion settings."""
+
+
+def load_json(text: str):
+    # Brackets inside JSON strings are data, including generated source-code artifacts.
+    depth = 0
+    quoted = False
+    escaped = False
+    for character in text:
+        if quoted:
+            if escaped:
+                escaped = False
+            elif character == "\\":
+                escaped = True
+            elif character == '"':
+                quoted = False
+        elif character == '"':
+            quoted = True
+        elif character in "[{":
+            depth += 1
+            if depth > MAX_JSON_DEPTH:
+                raise InputDepthError("JSON nesting exceeds the selected profile limit")
+        elif character in "]}":
+            depth -= 1
+    try:
+        return json.loads(text)
+    except RecursionError:
+        raise InputDepthError("JSON nesting exceeds parser limits") from None
+
+
 def read_text(path: Path) -> str:
-    if path.is_symlink() or not path.is_file() or path.stat().st_size > LIMIT:
-        raise ValueError(f"Expected a regular text file <=256 KiB: {path.name}")
-    return path.read_text(encoding="utf-8")
+    # Bound the read itself and refuse special files/leaf links, not only their metadata.
+    if path.is_symlink():
+        raise ValueError("Skill context cannot contain symlinks")
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+    with os.fdopen(os.open(path, flags), "rb") as source:
+        info = os.fstat(source.fileno())
+        if not stat.S_ISREG(info.st_mode) or info.st_size > LIMIT:
+            raise ValueError("Expected a regular text file <=256 KiB")
+        data = source.read(LIMIT + 1)
+    if len(data) > LIMIT:
+        raise ValueError("Text file grew beyond the 256 KiB limit")
+    return data.decode("utf-8")
 
 
 def read_cases(path: Path, kind: str) -> list[dict]:
-    cases = json.loads(read_text(path))
+    try:
+        cases = load_json(read_text(path))
+    except (ValueError, RecursionError):
+        raise ValueError("Invalid or excessively nested evaluation JSON") from None
     if not isinstance(cases, list) or not 1 <= len(cases) <= 100:
         raise ValueError("Expected between 1 and 100 evaluation cases")
     seen = set()
     for case in cases:
-        if not isinstance(case, dict) or not SLUG.fullmatch(str(case.get("id", ""))):
+        if not isinstance(case, dict) or not isinstance(case.get("id"), str) or not SLUG.fullmatch(case["id"]):
             raise ValueError("Each evaluation needs a lowercase hyphenated id")
         if case["id"] in seen:
             raise ValueError("Duplicate evaluation id")
@@ -57,7 +104,10 @@ def read_cases(path: Path, kind: str) -> list[dict]:
         if kind == "scenarios":
             if not isinstance(case.get("acceptance"), list) or not case["acceptance"]:
                 raise ValueError("Scenario acceptance criteria must be specified")
-            for check in case.get("checks", []):
+            checks = case.get("checks", [])
+            if not isinstance(checks, list):
+                raise ValueError("Scenario checks must be an array")
+            for check in checks:
                 if not isinstance(check, dict) or check.get("type") not in {"contains", "not_contains", "json_field", "artifact_exists"}:
                     raise ValueError("Unsupported deterministic check")
                 if check["type"] in {"contains", "not_contains"} and not isinstance(check.get("value"), str):
@@ -81,21 +131,41 @@ def safe_relative(name: str) -> Path:
 
 
 def package_context(skill: Path) -> tuple[dict, str, str]:
+    if skill.expanduser().is_symlink():
+        raise ValueError("Symlink package root is not supported")
+    skill = skill.expanduser().resolve()
     body = read_text(skill / "SKILL.md")
     front = re.match(r"\A---\s*\n(.*?)\n---\s*\n", body, re.S)
     if not front:
         raise ValueError("Missing skill frontmatter")
-    meta = yaml.load(front.group(1), Loader=UniqueLoader)
+    try:
+        meta = yaml.load(front.group(1), Loader=UniqueLoader)
+    except (yaml.YAMLError, RecursionError):
+        raise ValueError("Invalid or excessively nested skill frontmatter") from None
+    if not isinstance(meta, dict):
+        raise ValueError("Skill frontmatter must be a mapping")
     files = {"SKILL.md": body}
-    # The subject receives runtime guidance, never SPEC/evals/expected answers.
+    size = len(body.encode())
+    # Match the preview's selected text resources. This is not secret redaction.
     for dirname in ("references", "scripts", "assets"):
         root = skill / dirname
+        if root.is_symlink():
+            raise ValueError("Skill context cannot contain linked resource roots")
         if root.exists():
-            for p in sorted(root.rglob("*")):
+            for index, p in enumerate(sorted(root.rglob("*"))):
+                if index >= MAX_PACKAGE_ENTRIES:
+                    raise ValueError("Skill context entry limit exceeded")
                 if p.is_symlink():
                     raise ValueError("Skill context cannot contain symlinks")
-                if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc":
-                    files[p.relative_to(skill).as_posix()] = read_text(p)
+                relative = p.relative_to(skill)
+                if any(part.startswith(".") or part == "__pycache__" for part in relative.parts):
+                    continue
+                if p.is_file() and p.suffix in SUFFIXES:
+                    content = read_text(p)
+                    size += len(content.encode())
+                    if size > LIMIT:
+                        raise ValueError("Text-only profile supports at most 256 KiB of skill context")
+                    files[relative.as_posix()] = content
     packed = json.dumps(files, ensure_ascii=False, sort_keys=True)
     if len(packed.encode()) > LIMIT:
         raise ValueError("Text-only profile supports at most 256 KiB of skill context")
@@ -133,16 +203,22 @@ def parse_trace(host: str, raw: str) -> dict:
     model = None
     for line in raw.splitlines():
         try:
-            event = json.loads(line)
-        except ValueError:
+            event = load_json(line)
+        except (ValueError, RecursionError):
             continue
         if not isinstance(event, dict):
             continue
         model = event.get("model") or model
         if host == "codex":
             item = event.get("item", {})
+            if not isinstance(item, dict):
+                item = {}
             if event.get("type") == "item.completed" and item.get("type") == "agent_message":
-                final = item.get("text", "")
+                text = item.get("text", "")
+                if isinstance(text, str):
+                    final = text
+                else:
+                    errors.append("Invalid agent-message text")
             if event.get("type") == "turn.completed":
                 complete = True
                 usage = event.get("usage")
@@ -152,13 +228,19 @@ def parse_trace(host: str, raw: str) -> dict:
                 calls.append(item)
         else:
             message = event.get("message", {})
+            if not isinstance(message, dict):
+                message = {}
             model = message.get("model") or model
             for block in message.get("content", []) if isinstance(message.get("content"), list) else []:
                 if isinstance(block, dict) and block.get("type") == "tool_use":
                     calls.append(block)
             if event.get("type") == "result":
                 complete = not event.get("is_error", False) and event.get("subtype") == "success"
-                final = event.get("result", "")
+                text = event.get("result", "")
+                if isinstance(text, str):
+                    final = text
+                else:
+                    errors.append("Invalid result text")
                 usage = {"usage": event.get("usage"), "cost_usd": event.get("total_cost_usd")}
                 if not complete:
                     errors.append(event.get("errors") or "runtime reported failure")
@@ -166,56 +248,131 @@ def parse_trace(host: str, raw: str) -> dict:
 
 
 def run_process(cmd: list[str], prompt: str, cwd: Path, out: Path, timeout: float) -> dict:
-    # Do not copy auth, inherited environment or secrets into the evidence bundle.
-    # Hosts use their existing login. Evaluations send their input to that provider.
+    # Hosts retain their login; only the reviewed prompt enters stdin. This does not sandbox a malicious executable.
+    if os.name != "posix":
+        return {"status":"unavailable", "error":"POSIX process-group execution is required", "exit_code":None, "seconds":0}
     started = time.monotonic()
     status = "completed"
+    written = 0
+    process = None
+
+    def stop_group() -> None:
+        if process is not None:
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+
     with (out / "trace.jsonl").open("wb") as stdout, (out / "stderr.txt").open("wb") as stderr, tempfile.TemporaryFile() as stdin:
         stdin.write(prompt.encode())
         stdin.seek(0)
         try:
-            process = subprocess.Popen(cmd, cwd=cwd, stdin=stdin, stdout=stdout, stderr=stderr, start_new_session=True)
+            process = subprocess.Popen(cmd, cwd=cwd, stdin=stdin, stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE, start_new_session=True, bufsize=0)
         except OSError as exc:
             return {"status": "unavailable", "error": type(exc).__name__, "exit_code": None, "seconds": 0}
-        try:
-            while process.poll() is None:
-                if time.monotonic() - started > timeout:
+        with selectors.DefaultSelector() as selector:
+            try:
+                for stream, destination in ((process.stdout, stdout), (process.stderr, stderr)):
+                    os.set_blocking(stream.fileno(), False)
+                    selector.register(stream, selectors.EVENT_READ, destination)
+                while selector.get_map() or process.poll() is None:
+                    remaining = timeout - (time.monotonic() - started)
+                    if remaining <= 0:
+                        status = "timeout"
+                        break
+                    if process.poll() is not None:
+                        # A completed leader must not leave descendants extending the trace afterwards.
+                        stop_group()
+                    events = selector.select(min(0.1, remaining)) if selector.get_map() else []
+                    if not selector.get_map():
+                        time.sleep(min(0.01, remaining))
+                    for key, _ in events:
+                        try:
+                            chunk = os.read(key.fileobj.fileno(), min(65536, TRACE_LIMIT - written + 1))
+                        except BlockingIOError:
+                            continue
+                        if not chunk:
+                            selector.unregister(key.fileobj)
+                            key.fileobj.close()
+                            continue
+                        accepted = min(len(chunk), TRACE_LIMIT - written)
+                        if accepted:
+                            key.data.write(chunk[:accepted])
+                            written += accepted
+                        if accepted != len(chunk):
+                            status = "output_limit"
+                            break
+                    if status != "completed":
+                        break
+            finally:
+                # Always clean this owned process group, including a leader that already exited.
+                stop_group()
+                for stream in (process.stdout, process.stderr):
+                    if stream is not None:
+                        stream.close()
+                try:
+                    process.wait(timeout=1)
+                except subprocess.TimeoutExpired:
                     status = "timeout"
-                    break
-                if os.fstat(stdout.fileno()).st_size + os.fstat(stderr.fileno()).st_size > TRACE_LIMIT:
-                    status = "output_limit"
-                    break
-                time.sleep(0.1)
-        finally:
-            if process.poll() is None:
-                os.killpg(process.pid, signal.SIGKILL)
-            process.wait()
         if status == "completed" and process.returncode != 0:
             status = "runtime_error"
-    return {"status": status, "exit_code": process.returncode, "seconds": round(time.monotonic() - started, 3)}
+    return {"status": status, "exit_code": process.returncode,
+            "seconds": round(time.monotonic() - started, 3), "trace_bytes": written}
 
 
 def emit_artifacts(final: str, folder: Path) -> list[dict]:
     try:
-        value = json.loads(final)
+        value = load_json(final)
+    except InputDepthError:
+        raise ValueError("Emitted JSON exceeds nesting limits") from None
     except ValueError:
         return []
     artifacts = value.get("artifacts", {}) if isinstance(value, dict) else {}
     if not isinstance(artifacts, dict) or len(artifacts) > 50:
         raise ValueError("Invalid emitted artifacts")
     pending = []
+    seen = set()
     for name, content in artifacts.items():
         if not isinstance(content, str) or len(content.encode()) > LIMIT:
             raise ValueError("Artifacts must be bounded text")
-        pending.append((safe_relative(name), content))
+        relative = safe_relative(name)
+        if relative in seen:
+            raise ValueError("Duplicate normalized artifact path")
+        seen.add(relative)
+        pending.append((relative, content))
     if sum(len(c.encode()) for _, c in pending) > LIMIT:
         raise ValueError("Artifacts exceed total size limit")
+    if not pending:
+        return []
+    if folder.is_symlink():
+        raise ValueError("Artifact root cannot be a symlink")
+    if not hasattr(os, "O_NOFOLLOW") or not hasattr(os, "O_DIRECTORY"):
+        raise ValueError("Descriptor-safe artifact emission is unavailable on this platform")
+    folder.mkdir(parents=True, mode=0o700, exist_ok=True)
+    root_fd = os.open(folder, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
     manifest = []
-    for relative, content in pending:
-        target = folder / relative
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(content)
-        manifest.append({"path": relative.as_posix(), "sha256": digest(content.encode())})
+    try:
+        for relative, content in pending:
+            parent_fd = os.dup(root_fd)
+            try:
+                for component in relative.parts[:-1]:
+                    try:
+                        os.mkdir(component, mode=0o700, dir_fd=parent_fd)
+                    except FileExistsError:
+                        pass
+                    child_fd = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent_fd)
+                    os.close(parent_fd)
+                    parent_fd = child_fd
+                fd = os.open(relative.name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                             0o600, dir_fd=parent_fd)
+                with os.fdopen(fd, "w", encoding="utf-8") as output:
+                    output.write(content)
+            finally:
+                os.close(parent_fd)
+            manifest.append({"path": relative.as_posix(), "sha256": digest(content.encode())})
+    finally:
+        os.close(root_fd)
     return manifest
 
 
@@ -232,11 +389,11 @@ def check_output(final: str, checks: list[dict], artifacts: list[dict]) -> list[
             elif kind == "artifact_exists":
                 passed = check["path"] in {a["path"] for a in artifacts}
             elif kind == "json_field":
-                value = json.loads(final)
+                value = load_json(final)
                 for part in check["path"]:
                     value = value[part]
                 passed = type(value) is type(check["equals"]) and value == check["equals"]
-        except (ValueError, KeyError, TypeError, IndexError):
+        except (ValueError, RecursionError, KeyError, TypeError, IndexError):
             pass
         results.append({"check": check, "passed": passed})
     return results
@@ -335,7 +492,10 @@ def main() -> None:
     try:
         if not 1 <= args.repeats <= 10 or not 1 <= args.timeout <= 600 or not 1 <= args.max_runs <= 100:
             raise ValueError("Invalid repeat, timeout or run budget")
-        skill = args.skill.expanduser().resolve()
+        supplied_skill = args.skill.expanduser()
+        if supplied_skill.is_symlink():
+            raise ValueError("Symlink package root is not supported")
+        skill = supplied_skill.resolve()
         static = validate(skill)
         if static["errors"]:
             raise ValueError("Static validation failed: " + "; ".join(static["errors"]))
@@ -350,11 +510,13 @@ def main() -> None:
         if count > args.max_runs:
             raise ValueError(f"Plan needs {count} calls, exceeding --max-runs")
         plan = {"host": args.host, "requested_model": args.model or "host-default", "profile": "controlled-text-v1",
-                "skill_context_sha256": package_hash, "case_plan_sha256": digest(json.dumps(selected, sort_keys=True).encode()),
+                "skill_context_sha256": package_hash, "context_files":sorted(load_json(context)), "context_bytes":len(context.encode()), "case_plan_sha256": digest(json.dumps(selected, sort_keys=True).encode()),
                 "calls": count, "timeout_per_call": args.timeout, "cases": [c["id"] for _, c in selected]}
         if not args.run:
             print(json.dumps({"status": "planned_not_run", **plan}, indent=2))
             return
+        if os.name != "posix":
+            raise ValueError("Evaluation execution requires POSIX process groups; planning remains available")
         executable = shutil.which(args.host)
         if not executable:
             raise ValueError(f"Runtime unavailable: {args.host}; no evaluations ran")
@@ -388,7 +550,7 @@ def main() -> None:
                             "See report.json and the failing run's private trace. No release acceptance or baseline improvement is established. Resolve the runtime prerequisite and rerun into a new directory.\n")
                         print(f"Stopped on {result['status']}; evidence retained at {out}")
                         raise SystemExit(2)
-        report = json.loads((out / "report.json").read_text())
+        report = load_json((out / "report.json").read_text())
         (out / "report.md").write_text(f"# Evaluation report\n\nDecision: **{report['release_decision']}**\n\n"
             f"Host: {args.host} {version.stdout.strip()}. Completed: {report['completed']}/{count}.\n\n"
             "See report.json, per-run traces, final outputs and artifact manifests for evidence.\n\n"

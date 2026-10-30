@@ -10,7 +10,7 @@ import re
 import tempfile
 import zipfile
 
-from validate import UniqueLoader, validate
+from validate import MAX_TEXT_BYTES, UniqueLoader, validate
 import yaml
 
 ROOT_FILES = {"SKILL.md", "SPEC.md", "README.md", "VALIDATION.md", "requirements-dev.txt", "release.json", "LICENSE", "LICENSE.txt", "LICENSE.md"}
@@ -20,6 +20,7 @@ SUFFIXES = {".md", ".py", ".json", ".yaml", ".yml", ".txt"}
 
 
 def snapshot(skill: Path) -> tuple[str, str, dict[str, bytes]]:
+    if skill.expanduser().is_symlink(): raise ValueError("Symlink package root is not supported")
     skill = skill.expanduser().resolve()
     report = validate(skill, "engineered")
     if report["static_conformance"] != "pass":
@@ -40,7 +41,9 @@ def snapshot(skill: Path) -> tuple[str, str, dict[str, bytes]]:
         name = relative.as_posix()
         selected = name in ROOT_FILES or name in EVALS or name == "templates/skill/SKILL.md.template" or (relative.parts[0] in TREES and path.suffix in SUFFIXES)
         if selected:
+            if path.stat().st_size > MAX_TEXT_BYTES: raise ValueError("Selected file exceeds 256 KiB limit")
             files[name] = path.read_bytes()
+            if sum(len(data) for data in files.values()) > 1024 * 1024: raise ValueError("Selected package exceeds 1 MiB limit")
     # Check the selected artifact itself, not only the richer development tree.
     # A private/unsupported resource must not silently become a broken download.
     with tempfile.TemporaryDirectory() as staging:

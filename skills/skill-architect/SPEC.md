@@ -1,6 +1,6 @@
 # Skill Architect engineering contract
 
-Version: 0.3.0-preview.3. Status: downloadable preview, conditional review.
+Version: 0.3.0-preview.4. Status: downloadable preview, conditional review.
 
 ## Objective and users
 
@@ -40,3 +40,7 @@ Generated skills carry a proportionate continuing-assurance contract. Applicatio
 Keep one canonical source and a matching installed copy; preserve private run evidence separately from distributable packages. Reevaluate changed behavior, runtime adapters, permissions and confirmed regressions. Record reviewer, artifact/context hashes, versions, date, sample size, limitations and remediation in each release. The project owner accepts public releases; installation alone is not publication.
 
 Operational monitor designs must apply the proportional lifecycle/security references: enforced least privilege, collector trust, protected enrollment, committed-state consistency, immutable run history and independent coverage/delivery. Separate private-pilot regression evidence from the architect's own unexecuted behavioural cases.
+
+## Public-tooling review corrections
+
+Provider-context selection excludes hidden/cache paths and unsupported resources, rejects linked package/resource roots, and exposes selected path/byte metadata in the dry-run plan. Ordinary visible text can still contain sensitive material; these filters are not general redaction. Package and parser bounds fail visibly. Generated artifact writes are confined/create-only and do not follow linked parent directories. Combined stdout/stderr capture is stream bounded and process-group cleanup runs after completion as well as timeout. Execution requires POSIX; planning can run on other supported Python platforms. The executable/login/environment remain trusted dependencies, and process-group cleanup cannot contain a deliberately hostile CLI.
