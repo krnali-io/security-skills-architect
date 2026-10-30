@@ -16,6 +16,8 @@ def scaffold(name: str, description: str, output: Path) -> Path:
     if not description.strip() or len(description) > 1024 or any(ord(c) < 32 for c in description):
         raise ValueError("Description must be 1–1024 characters, on one line")
     template = Path(__file__).resolve().parent.parent / "templates" / "skill"
+    if template.is_symlink() or template.parent.is_symlink():
+        raise ValueError("Template roots must not be symlinks")
     target = output.expanduser().resolve() / name
     if target.exists() or target.is_symlink():
         raise FileExistsError(f"Destination already exists: {target}")

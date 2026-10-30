@@ -8,7 +8,7 @@ Security Skills Architect brings together a general skill engineering workflow a
 
 **Preview:** the packages and tooling are available for evaluation. A separate private recurring pilot has been exercised; full operational acceptance, native host activation and live Ops/ITSM delivery remain unverified. Installing these skills does not start a monitoring service.
 
-[Download the preview](https://github.com/krnali-io/security-skills-architect/releases/tag/v0.3.0-preview.4) · [Application workflow](skills/application-defence/SKILL.md) · [Engineering workflow](skills/skill-architect/SKILL.md)
+[Download the preview](https://github.com/krnali-io/security-skills-architect/releases/tag/v0.3.0-preview.5) · [Application workflow](skills/application-defence/SKILL.md) · [Engineering workflow](skills/skill-architect/SKILL.md)
 
 ## Choose a skill
 
@@ -25,8 +25,8 @@ Ask the built-in installer to install either or both folders:
 
 ```text
 Use $skill-installer to install these skills:
-https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.4/skills/skill-architect
-https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.4/skills/application-defence
+https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.5/skills/skill-architect
+https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.5/skills/application-defence
 ```
 
 Alternatively, download the individual ZIPs and `SHA256SUMS` from the release. Verify the downloaded files with `sha256sum -c SHA256SUMS` on Linux or `shasum -a 256 -c SHA256SUMS` on macOS; download every listed file to verify the complete set. Extract the desired skill folder into your project's `.agents/skills/` or your personal `~/.agents/skills/` directory. Preserve each folder name. For an upgrade, move the previous folder outside the skill discovery directory first so versions are not mixed.
@@ -151,6 +151,12 @@ The initial preview passed 34 local tooling tests. Both packages and the unpacke
 Read the detailed [architect evidence](skills/skill-architect/VALIDATION.md) and [application builder evidence](skills/application-defence/VALIDATION.md). The package metadata records its engineering evidence; GitHub release publication does not change its conditional engineering verdict.
 
 Further acceptance work includes broader application components, per-advisory code-path evidence, repeated local-model quality evaluations, native activation, scheduler recovery and a verified krnali Ops handoff. CI runs local tooling checks only and contains no application deployment job. Any deployment must use the operator's explicitly approved destination and existing hosting policy.
+
+## Security review
+
+The latest tooling revision passed 54 offline tests after correcting context-disclosure, symlink, parser, artifact and process-handling findings. No provider calls were made for that review. [Read the security review](docs/public-security-review-2026-10-30.md) and [report vulnerabilities privately](SECURITY.md).
+
+Current source and release attachments were checked for operational identifiers and credential patterns. Older source history still has an approval-gated anonymisation task; a clean scanner result is not a guarantee that no identifying information exists. Use the latest linked preview for new evaluations. Secret scanning/push protection and dependency alerts are enabled, CI actions/dependencies are pinned, and main requires reviewed workflow checks through a pull request.
 
 ## Feedback and licence
 
