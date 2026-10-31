@@ -1,6 +1,6 @@
 # Skill Architect engineering contract
 
-Version: 0.3.0-preview.4. Status: downloadable preview, conditional review.
+Version: 0.3.0-preview.5. Status: downloadable preview, conditional review.
 
 ## Objective and users
 
@@ -44,3 +44,7 @@ Operational monitor designs must apply the proportional lifecycle/security refer
 ## Public-tooling review corrections
 
 Provider-context selection excludes hidden/cache paths and unsupported resources, rejects linked package/resource roots, and exposes selected path/byte metadata in the dry-run plan. Ordinary visible text can still contain sensitive material; these filters are not general redaction. Package and parser bounds fail visibly. Generated artifact writes are confined/create-only and do not follow linked parent directories. Combined stdout/stderr capture is stream bounded and process-group cleanup runs after completion as well as timeout. Execution requires POSIX; planning can run on other supported Python platforms. The executable/login/environment remain trusted dependencies, and process-group cleanup cannot contain a deliberately hostile CLI.
+
+## Licence
+
+This package is licensed under the Apache License, Version 2.0 (`Apache-2.0`). The unmodified licence text is included in [LICENSE](LICENSE). Licensing does not change the conditional engineering verdict or expand operational permissions.

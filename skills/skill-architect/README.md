@@ -1,4 +1,4 @@
-# Skill Architect — 0.3.0-preview.4
+# Skill Architect — 0.3.0-preview.5
 
 Build and review reusable Agent Skills against seven quality gates, with separate structural checks and actual behavioral evidence.
 
@@ -51,7 +51,7 @@ See [evaluation guidance](references/evaluation.md) for case schemas and limits,
 python3 scripts/build_preview.py --skill . --output /path/to/new-preview-directory
 ```
 
-Repeat `--skill` to include another package. The builder creates deterministic ZIPs, per-file/ZIP hashes, a manifest and SHA256SUMS. It includes only selected package resources and planned evaluation files; private run traces, profiles and unknown root files are excluded. Review included files before public sharing: allowlisting is not secret detection. Checksums are not signatures. Output is a local review preview, not publication or behavioural certification. Preview packages are published through the [project releases](https://github.com/krnali-io/security-skills-architect/releases). A public reuse licence still awaits the owner's decision. The scaffold entrypoint is stored as `SKILL.md.template` so an installer does not discover it as a second skill.
+Repeat `--skill` to include another package. The builder creates deterministic ZIPs, per-file/ZIP hashes, a manifest and SHA256SUMS. It includes only selected package resources and planned evaluation files; private run traces, profiles and unknown root files are excluded. Review included files before public sharing: allowlisting is not secret detection. Checksums are not signatures. Output is a local review preview, not publication or behavioural certification. Preview packages are published through the [project releases](https://github.com/krnali-io/security-skills-architect/releases). This package is licensed under the [Apache License, Version 2.0](LICENSE). The scaffold entrypoint is stored as `SKILL.md.template` so an installer does not discover it as a second skill.
 
 ## Feedback and maintenance
 
@@ -62,3 +62,7 @@ To remove the local skill, remove only its installed `skill-architect` folder af
 Format reference: [Agent Skills specification](https://agentskills.io/specification). Host adapter sources and untested boundaries are listed in [platform guidance](references/platforms.md).
 
 The public tooling security review and its offline regression evidence are recorded in [the security review](https://github.com/krnali-io/security-skills-architect/blob/main/docs/public-security-review-2026-10-30.md). Dry-run plans list selected context files and bytes; inspect that content before adding `--run`. Hidden-file filtering is not a secret scrubber. Evaluation execution currently requires POSIX process groups (for example Linux or macOS); planning remains available elsewhere. The development install is hash-locked and binary-only and fails if no compatible PyYAML wheel exists.
+
+## Licence
+
+Copyright 2026 krnali contributors. Licensed under the [Apache License, Version 2.0](LICENSE) (`Apache-2.0`). The complete licence text travels with this standalone package.

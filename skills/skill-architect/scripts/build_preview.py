@@ -72,7 +72,7 @@ def build(skills: list[Path], output: Path) -> dict:
         "schema": "skill-preview-distribution/v1",
         "status": "local-review-preview",
         "published": False,
-        "notice": "Checksums identify bytes, not signatures or behavioral certification. Public licence and release approval must be established separately.",
+        "notice": "Checksums identify bytes, not signatures or behavioral certification. Consult each package's included licence files and declarations for reuse terms; distribution approval is recorded separately.",
         "packages": [],
     }
     for name, version, files in packages:

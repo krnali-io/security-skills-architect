@@ -1,6 +1,6 @@
 # Application Defence preview evidence
 
-30 October 2026 · 0.2.0-preview.3 · decision: **conditional_review**.
+31 October 2026 · 0.2.0-preview.4 · decision: **conditional_review**.
 
 | Gate | State | Evidence and remaining acceptance |
 |---|---|---|
@@ -18,6 +18,8 @@ The private executor review identified and corrected defects in state-loss handl
 
 The evaluation planner accepted 26 scenarios and 8 trigger cases: a 60-call baseline/treatment/catalog plan. Status: **planned_not_run**. No public-evaluator model calls were made for this revision. The 34 engineering-tooling tests passed; they exercise synthetic tooling, archive/checksum consistency, private-trace exclusion and safe-path boundaries, not the security judgement of the generated skill.
 
-Distribution is a GitHub preview, with publication recorded by releases. Structural/package checks do not change the conditional engineering verdict. A public reuse licence has not been selected and no native-host support certification is asserted. This revision uses new package versions and does not overwrite earlier release attachments. See the [sanitized review](https://github.com/krnali-io/security-skills-architect/blob/main/docs/review-2026-10-30.md).
+Distribution is a GitHub preview, with publication recorded by releases. Structural/package checks do not change the conditional engineering verdict. The current package is licensed under Apache-2.0; no native-host support certification is asserted. This revision uses new package versions and does not overwrite earlier release attachments. See the [sanitized review](https://github.com/krnali-io/security-skills-architect/blob/main/docs/review-2026-10-30.md).
 
 The seven new planned scenarios cover historical exploitation, advisory reinstatement, repeated enrolled-state loss, committed-store/history integrity, concurrent observation, target self-report and the enforced analysis/collector boundary. These factory model evaluations have not been executed. See the [sanitized security follow-up](https://github.com/krnali-io/security-skills-architect/blob/main/docs/security-review-2026-10-30.md).
+
+Licensing update, 31 October 2026: `license: Apache-2.0` is declared in the skill metadata and the official unmodified licence text is included in the package and preview ZIP. Root/package licence bytes are checked against the Apache Software Foundation text. No new provider/model calls or broader acceptance claim accompany this licensing revision.

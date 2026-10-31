@@ -1,8 +1,9 @@
 ---
 name: skill-architect
 description: Design, build, review and evaluate reusable Agent Skills. Use for requests to create or improve a SKILL.md package, define its architecture and acceptance gates, test its triggers and outcomes, or prepare an evidence-backed release decision. Do not use for ordinary application coding or executing the operational task a skill describes.
+license: Apache-2.0
 metadata:
-  version: "0.3.0-preview.4"
+  version: "0.3.0-preview.5"
 ---
 
 # Skill Architect

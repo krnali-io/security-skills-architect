@@ -8,7 +8,7 @@ Security Skills Architect brings together a general skill engineering workflow a
 
 **Preview:** the packages and tooling are available for evaluation. A separate private recurring pilot has been exercised; full operational acceptance, native host activation and live Ops/ITSM delivery remain unverified. Installing these skills does not start a monitoring service.
 
-[Download the preview](https://github.com/krnali-io/security-skills-architect/releases/tag/v0.3.0-preview.6) · [Application workflow](skills/application-defence/SKILL.md) · [Engineering workflow](skills/skill-architect/SKILL.md)
+[Download the preview](https://github.com/krnali-io/security-skills-architect/releases/tag/v0.3.0-preview.7) · [Application workflow](skills/application-defence/SKILL.md) · [Engineering workflow](skills/skill-architect/SKILL.md)
 
 ## Choose a skill
 
@@ -25,8 +25,8 @@ Ask the built-in installer to install either or both folders:
 
 ```text
 Use $skill-installer to install these skills:
-https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.6/skills/skill-architect
-https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.6/skills/application-defence
+https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.7/skills/skill-architect
+https://github.com/krnali-io/security-skills-architect/tree/v0.3.0-preview.7/skills/application-defence
 ```
 
 Alternatively, download the individual ZIPs and `SHA256SUMS` from the release. Verify the downloaded files with `sha256sum -c SHA256SUMS` on Linux or `shasum -a 256 -c SHA256SUMS` on macOS; download every listed file to verify the complete set. Extract the desired skill folder into your project's `.agents/skills/` or your personal `~/.agents/skills/` directory. Preserve each folder name. For an upgrade, move the previous folder outside the skill discovery directory first so versions are not mixed.
@@ -162,4 +162,4 @@ Current source and release attachments were checked for operational identifiers 
 
 Use [GitHub issues](https://github.com/krnali-io/security-skills-architect/issues) for sanitized bug reports and feature requests. Include the skill version, host version, expected result, actual result and a minimal reproduction. Keep credentials, private repositories and raw customer traces out of public issues.
 
-A public reuse licence has not yet been selected. This repository is published as a preview for inspection and feedback; no open-source licence grant is asserted. The licence decision will be recorded explicitly when selected by the owner.
+Copyright 2026 krnali contributors. This project and both downloadable skill packages are licensed under the [Apache License, Version 2.0](LICENSE) (`Apache-2.0`). Each package includes the complete licence text so it can be distributed independently. Earlier review notes describe the licensing decision at their original dates; the current licence applies to this revision.
