@@ -1,9 +1,9 @@
 {
   "schema": "skill-architect.package/v1",
-  "version": "0.3.0-preview.4",
+  "version": "0.3.0-preview.5",
   "status": "preview-conditional-review",
-  "prepared_on": "2026-10-30",
-  "public_license": "not-selected",
+  "prepared_on": "2026-10-31",
+  "public_license": "Apache-2.0",
   "structural_validation": "pass-selected-engineered-checks",
   "tooling_tests": {
     "passed": 54,

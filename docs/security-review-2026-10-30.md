@@ -34,3 +34,5 @@ The local model has no command tools or patch authority in the reference pilot. 
 The public downloads contain reusable instructions, references and engineering tooling. They do not contain the private application executor, profile, raw audit or findings, and do not start a monitoring service. krnali Ops remains the intended operator destination; its adapter has not been implemented or verified. No automatic production fixes, full infrastructure assessment, discovery of undisclosed zero-days or production-readiness score is claimed.
 
 Public reuse licensing is still awaiting the owner's decision. New package/release versions preserve the distinction between published downloads and accepted engineering evidence.
+
+Licensing update, 31 October 2026: the project and current skill packages are now licensed under [Apache-2.0](../LICENSE). Licensing statements above are retained as historical evidence of the original review date.

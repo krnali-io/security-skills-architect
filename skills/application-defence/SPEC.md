@@ -1,6 +1,6 @@
 # Application Defence engineering contract
 
-Version: 0.2.0-preview.3. Decision: conditional_review; downloadable design preview.
+Version: 0.2.0-preview.4. Decision: conditional_review; downloadable design preview.
 
 ## Objective
 Help application owners, developers and security operators turn an application review into a maintained application-specific skill and operational check contract. Skills coordinate reasoning; collectors, schedulers, secret stores and ITSM services provide execution and durable state.
@@ -36,3 +36,7 @@ Planned scenarios cover generation, missing identity, declared-vs-deployed evide
 
 ## Maintenance and sources
 The application owner designates service, triage and executor/ITSM owners during onboarding. The distributing project owner maintains the builder until assigned. Refresh after application boundary, runtime, dependency, permission or collector changes; turn confirmed failures into regressions. Preserve source provenance, private history and exception expiry. Cadence, routing and SLA proposals remain proposed until agreed.
+
+## Licence
+
+This package is licensed under the Apache License, Version 2.0 (`Apache-2.0`). The unmodified licence text is included in [LICENSE](LICENSE). Licensing does not change the conditional engineering verdict or expand operational permissions.

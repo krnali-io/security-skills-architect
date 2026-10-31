@@ -1,8 +1,9 @@
 ---
 name: application-defence
 description: "Learn a specific application and generate or maintain its dedicated defence skill, evidence profile, recurring check plan and ITSM handoff. Use for newly disclosed vulnerabilities, zero-day exposure triage and application-specific ongoing security monitoring; exclude unrelated coding and standalone one-off audits."
+license: Apache-2.0
 metadata:
-  version: "0.2.0-preview.3"
+  version: "0.2.0-preview.4"
 ---
 
 # Application Defence

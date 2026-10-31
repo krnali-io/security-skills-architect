@@ -1,4 +1,4 @@
-# Application Defence — 0.2.0-preview.3
+# Application Defence — 0.2.0-preview.4
 
 **Status:** published preview / conditional review. The reusable builder has structural checks and planned behavioural cases. A separate private application pilot has exercised deployed-package advisory queries and local-model interpretation; broader builder behaviour, native discovery, recovery and live krnali Ops delivery remain unverified. This package installs no collector, background service or credentials.
 
@@ -26,7 +26,7 @@ Use the operator's existing destination. Our pilot intends to use krnali Ops; it
 
 Read [SPEC.md](SPEC.md) and [VALIDATION.md](VALIDATION.md) for scope, structural checks, pilot evidence boundaries and open gates. The [project review](https://github.com/krnali-io/security-skills-architect/blob/main/docs/review-2026-10-30.md) records lessons from the private pilot without publishing its raw profile or findings.
 
-Use [GitHub issues](https://github.com/krnali-io/security-skills-architect/issues) for sanitized reports containing version, host, expected/actual result and a minimal reproduction. Confirmed failures become regressions. A public reuse licence is still awaiting an owner decision; publication does not assert an open-source licence grant. Native host support requires acceptance testing beyond the [Agent Skills format](https://agentskills.io/specification).
+Use [GitHub issues](https://github.com/krnali-io/security-skills-architect/issues) for sanitized reports containing version, host, expected/actual result and a minimal reproduction. Confirmed failures become regressions. This package is licensed under the [Apache License, Version 2.0](LICENSE). Native host support requires acceptance testing beyond the [Agent Skills format](https://agentskills.io/specification).
 
 ## Uninstall
 
@@ -35,3 +35,7 @@ Remove only this installed builder through the host's documented process. Genera
 ## Lessons from the security follow-up
 
 The [sanitized review](https://github.com/krnali-io/security-skills-architect/blob/main/docs/security-review-2026-10-30.md) informs the generated executor contract: preserve historical exploitation, protect enrollment and committed state, coordinate watchers with writers, retain immutable history and separate unprivileged analysis from trusted collection. The private reference runtime passed 29 independently repeated tests and a staged enrolled run. This package remains instructions-only and conditionally reviewed; those results do not establish factory behaviour or full production readiness.
+
+## Licence
+
+Copyright 2026 krnali contributors. Licensed under the [Apache License, Version 2.0](LICENSE) (`Apache-2.0`). The complete licence text travels with this standalone package.
